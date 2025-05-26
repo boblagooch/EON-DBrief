@@ -305,15 +305,15 @@
     
     select {
       width: 100%;
-      height: 50px;
+      height: 60px;
       margin-top: 1rem;
-      padding: 0.75rem;
+      padding: 1rem;
       font-family: 'Roboto Condensed', sans-serif;
       border: 2px solid #85C1E9;
       border-radius: 0;
       background: linear-gradient(135deg, rgba(52, 73, 94, 0.9), rgba(93, 109, 126, 0.9));
       color: #F8F9FA;
-      font-size: 1rem;
+      font-size: 1.1rem;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.3s ease;
@@ -325,6 +325,12 @@
       border-color: #AED6F1;
       box-shadow: 0 0 15px rgba(174, 214, 241, 0.4);
       background: linear-gradient(135deg, rgba(93, 109, 126, 0.9), rgba(52, 73, 94, 0.9));
+      transform: scale(1.02);
+    }
+    
+    select:hover {
+      border-color: #AED6F1;
+      transform: translateY(-1px);
     }
     
     select option {
@@ -335,19 +341,21 @@
     
     textarea {
       width: 100%;
-      height: 100px;
+      min-height: 100px;
+      max-height: 300px;
       margin-top: 1rem;
-      padding: 0.75rem;
+      padding: 1rem;
       font-family: 'Roboto Condensed', sans-serif;
       border: 2px solid #85C1E9;
       border-radius: 0;
       background: linear-gradient(135deg, rgba(52, 73, 94, 0.8), rgba(93, 109, 126, 0.8));
       color: #F8F9FA;
-      font-size: 1rem;
+      font-size: 1.1rem;
       font-weight: 400;
-      resize: vertical;
-      transition: all 0.3s ease;
+      resize: none;
+      transition: all 0.3s ease, height 0.2s ease;
       text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+      line-height: 1.5;
     }
     
     textarea:focus {
@@ -355,6 +363,7 @@
       border-color: #AED6F1;
       box-shadow: 0 0 15px rgba(174, 214, 241, 0.4);
       background: linear-gradient(135deg, rgba(93, 109, 126, 0.8), rgba(52, 73, 94, 0.8));
+      transform: scale(1.01);
     }
     
     textarea::placeholder {
@@ -380,7 +389,7 @@
     }
     
     button {
-      padding: 1rem 2rem;
+      padding: 1.2rem 2.5rem;
       border: 2px solid #85C1E9;
       border-radius: 0;
       cursor: pointer;
@@ -393,9 +402,21 @@
         0 4px 8px rgba(0, 0, 0, 0.3),
         inset 0 1px 0 rgba(174, 214, 241, 0.2);
       transition: all 0.3s ease;
-      min-width: 120px;
+      min-width: 140px;
       position: relative;
       overflow: hidden;
+    }
+    
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 
+        0 6px 12px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(174, 214, 241, 0.3);
+    }
+    
+    button:active {
+      transform: translateY(0);
+      transition: all 0.1s ease;
     }
     
     button::before {
@@ -737,25 +758,14 @@
       <div class="confirmation" id="confirmation">
         <h2>Thanks for reflecting! 🌟</h2>
         <p>Your feedback helps make our team stronger.</p>
-        <p style="font-size: 0.8rem; opacity: 0.7; margin-top: 1rem; font-style: italic;">please hold for pic of cute animal</p>
-      </div>
-      
-      <!-- Reward Page -->
-      <div class="reward-page" id="rewardPage" style="display: none;">
-        <div class="reward-content">
-          <h1>🎉 You Did It! 🎉</h1>
-          <div class="cute-animal" id="cuteAnimal">
-            <!-- Random cute animal will be displayed here -->
-          </div>
-          <p class="reward-message">Thanks for taking the time to debrief!</p>
-          <p class="reward-sub">Your shift is officially complete. Rest well! 😴</p>
-          <button type="button" id="backToFormBtn" class="btn-secondary" style="margin-top: 2rem;">Back to Form</button>
-        </div>
+        <div style="font-size: 4rem; margin: 2rem 0;">🐕</div>
       </div>
     </div>
   </div>
 
   <script>
+    console.log('Script is loading...');
+    
     // Add error handling to catch issues
     window.addEventListener('error', function(e) {
       console.error('Script Error Details:');
@@ -783,6 +793,7 @@
     */
 
     document.addEventListener('DOMContentLoaded', function () {
+      console.log('DOM loaded, initializing form...');
       try {
       const steps = document.querySelectorAll('.step');
       const nextBtn = document.getElementById('nextBtn');
@@ -795,12 +806,18 @@
       
       let currentStep = 0;
 
-      // Initialize character counters
+      // Initialize character counters and auto-expanding textareas
       function initCharCounters() {
         const textareas = document.querySelectorAll('textarea');
         textareas.forEach(textarea => {
           const counterId = textarea.id + '-counter';
           const counter = document.getElementById(counterId);
+          
+          // Auto-expand functionality
+          function autoExpand() {
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.min(textarea.scrollHeight, 300) + 'px';
+          }
           
           function updateCounter() {
             const remaining = textarea.value.length;
@@ -812,10 +829,27 @@
             } else {
               counter.style.color = '#AED6F1';
             }
+            
+            // Auto-expand as user types
+            autoExpand();
           }
           
           textarea.addEventListener('input', updateCounter);
+          textarea.addEventListener('paste', () => {
+            setTimeout(updateCounter, 10); // Allow paste to complete
+          });
+          
+          // Initialize
           updateCounter();
+          
+          // Better mobile keyboard handling
+          textarea.addEventListener('focus', () => {
+            if (window.innerWidth <= 768) {
+              setTimeout(() => {
+                textarea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }, 300);
+            }
+          });
         });
       }
 
