@@ -3,18 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shift Reflection</title>
-  
-  <!-- PWA Manifest -->
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#FFD700">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Спикизи">
-  
-  <!-- Fallback icons -->
-  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
-  <link rel="apple-touch-icon" href="icon-192.png">
+  <title>Debrief</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue:wght@400&family=Roboto+Condensed:wght@400;700&display=swap');
     
@@ -30,22 +19,6 @@
       background: linear-gradient(135deg, #2C3E50 0%, #34495E 25%, #5D6D7E 75%, #85929E 100%);
       position: relative;
       overflow-x: hidden;
-    }
-    
-    /* Soviet-style geometric background elements */
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: 
-        radial-gradient(circle at 20% 30%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 70%, rgba(220, 20, 60, 0.1) 0%, transparent 50%),
-        linear-gradient(45deg, transparent 30%, rgba(255, 215, 0, 0.05) 30%, rgba(255, 215, 0, 0.05) 70%, transparent 70%),
-        linear-gradient(-45deg, transparent 30%, rgba(220, 20, 60, 0.05) 30%, rgba(220, 20, 60, 0.05) 70%, transparent 70%);
-      z-index: 1;
     }
     
     /* Animated geometric shapes */
@@ -71,7 +44,7 @@
       height: 0;
       border-left: 50px solid transparent;
       border-right: 50px solid transparent;
-      border-bottom: 80px solid #FFD700;
+      border-bottom: 80px solid #85C1E9;
       top: 10%;
       left: 5%;
       animation-duration: 25s;
@@ -80,7 +53,7 @@
     .shape-2 {
       width: 60px;
       height: 60px;
-      background: #DC143C;
+      background: #5DADE2;
       transform: rotate(45deg);
       top: 60%;
       right: 10%;
@@ -91,7 +64,7 @@
     .shape-3 {
       width: 0;
       height: 0;
-      border-top: 40px solid #FFD700;
+      border-top: 40px solid #AED6F1;
       border-left: 25px solid transparent;
       border-right: 25px solid transparent;
       top: 80%;
@@ -102,7 +75,7 @@
     .shape-4 {
       width: 80px;
       height: 20px;
-      background: linear-gradient(90deg, #DC143C, #FFD700);
+      background: linear-gradient(90deg, #5DADE2, #85C1E9);
       top: 20%;
       right: 20%;
       animation-duration: 28s;
@@ -191,6 +164,7 @@
         0 0 15px rgba(213, 219, 219, 0.3);
       margin-bottom: 0.5rem;
       position: relative;
+      font-weight: 900;
     }
     
     .cyrillic-main::before,
@@ -215,118 +189,12 @@
       font-family: 'Roboto Condensed', sans-serif;
       font-size: 1.1rem;
       color: #85C1E9;
-      font-weight: 700;
+      font-weight: 900;
       letter-spacing: 2px;
       text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
       font-style: italic;
     }
     
-    /* Mood Theme Selector */
-    .mood-selector {
-      text-align: center;
-      margin-bottom: 1.5rem;
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-    }
-    
-    .mood-btn {
-      background: rgba(93, 109, 126, 0.3);
-      border: 2px solid rgba(174, 214, 241, 0.5);
-      padding: 0.8rem 1.2rem;
-      font-size: 1.5rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      min-width: 60px;
-      border-radius: 50%;
-    }
-    
-    .mood-btn:hover {
-      background: rgba(93, 109, 126, 0.5);
-      border-color: #AED6F1;
-      transform: scale(1.1);
-    }
-    
-    .mood-btn.active {
-      background: rgba(93, 173, 226, 0.6);
-      border-color: #AED6F1;
-      box-shadow: 0 0 15px rgba(174, 214, 241, 0.4);
-    }
-    
-    /* Voice Note Button */
-    .voice-btn {
-      position: absolute;
-      right: 10px;
-      top: 10px;
-      background: rgba(93, 173, 226, 0.8);
-      border: 1px solid #AED6F1;
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      font-size: 1.2rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .voice-btn:hover {
-      background: rgba(174, 214, 241, 0.9);
-      transform: scale(1.1);
-    }
-    
-    .voice-btn.recording {
-      background: #e74c3c;
-      animation: pulse-record 1s infinite;
-    }
-    
-    @keyframes pulse-record {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.6; }
-    }
-    
-    /* Make textarea container relative for voice button positioning */
-    .textarea-container {
-      position: relative;
-      display: inline-block;
-      width: 100%;
-    }
-    
-    /* Theme Variations */
-    body.theme-good {
-      background: linear-gradient(135deg, #27AE60 0%, #2ECC71 25%, #58D68D 75%, #85C1E9 100%);
-    }
-    
-    body.theme-good .container {
-      background: linear-gradient(135deg, 
-        rgba(39, 174, 96, 0.92) 0%, 
-        rgba(46, 204, 113, 0.95) 50%, 
-        rgba(88, 214, 141, 0.92) 100%
-      );
-      border-color: #58D68D;
-    }
-    
-    body.theme-good .container::before {
-      background: linear-gradient(45deg, #58D68D, #2ECC71, #58D68D, #2ECC71);
-    }
-    
-    body.theme-rough {
-      background: linear-gradient(135deg, #8B4513 0%, #A0522D 25%, #CD853F 75%, #DEB887 100%);
-    }
-    
-    body.theme-rough .container {
-      background: linear-gradient(135deg, 
-        rgba(139, 69, 19, 0.92) 0%, 
-        rgba(160, 82, 45, 0.95) 50%, 
-        rgba(205, 133, 63, 0.92) 100%
-      );
-      border-color: #DEB887;
-    }
-    
-    body.theme-rough .container::before {
-      background: linear-gradient(45deg, #DEB887, #CD853F, #DEB887, #CD853F);
-    }
     h1 {
       text-align: center;
       color: #D5DBDB;
@@ -548,9 +416,9 @@
     .btn-primary:hover {
       background: linear-gradient(135deg, #85C1E9, #AED6F1);
       box-shadow: 
-        0 6px 12px rgba(0, 0, 0, 0.4),
+        0 8px 16px rgba(0, 0, 0, 0.4),
         0 0 20px rgba(174, 214, 241, 0.3);
-      transform: translateY(-2px);
+      transform: translateY(-3px) scale(1.02);
     }
     
     .btn-secondary {
@@ -562,9 +430,29 @@
     .btn-secondary:hover {
       background: linear-gradient(135deg, rgba(93, 109, 126, 0.8), rgba(133, 147, 158, 0.8));
       box-shadow: 
-        0 6px 12px rgba(0, 0, 0, 0.4),
+        0 8px 16px rgba(0, 0, 0, 0.4),
         0 0 20px rgba(174, 214, 241, 0.2);
-      transform: translateY(-2px);
+      transform: translateY(-3px) scale(1.02);
+    }
+    
+    .step {
+      display: none;
+      animation: slideInRight 0.4s ease-out;
+    }
+    
+    .step.active {
+      display: block !important;
+    }
+    
+    @keyframes slideInRight {
+      from { 
+        opacity: 0; 
+        transform: translateX(30px);
+      }
+      to { 
+        opacity: 1; 
+        transform: translateX(0);
+      }
     }
     
     .confirmation {
@@ -572,7 +460,21 @@
       text-align: center;
       color: #AED6F1;
       margin-top: 2rem;
-      animation: fadeIn 0.5s ease-in;
+      animation: celebrationPulse 0.8s ease-out;
+    }
+    
+    @keyframes celebrationPulse {
+      0% { 
+        opacity: 0; 
+        transform: scale(0.8);
+      }
+      50% { 
+        transform: scale(1.05);
+      }
+      100% { 
+        opacity: 1; 
+        transform: scale(1);
+      }
     }
     
     .confirmation h2 {
@@ -591,158 +493,32 @@
       color: #F8F9FA;
     }
     
-    .step {
-      display: none;
-      animation: slideIn 0.4s ease-in;
-    }
-    
-    .step.active {
-      display: block;
-    }
-    
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateX(30px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
-    
-    .reward-page {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, #2C3E50 0%, #34495E 50%, #5D6D7E 100%);
-      z-index: 1000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      animation: fadeIn 1s ease-in;
-    }
-    
-    .reward-content {
-      text-align: center;
-      background: rgba(52, 73, 94, 0.95);
-      padding: 3rem;
-      border: 2px solid #AED6F1;
-      box-shadow: 0 0 30px rgba(174, 214, 241, 0.3);
-      max-width: 600px;
-      width: 90%;
-    }
-    
-    .reward-content h1 {
-      color: #D5DBDB;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 3rem;
-      margin-bottom: 2rem;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-    }
-    
-    .cute-animal {
-      width: 100%;
-      height: 300px;
-      margin: 2rem 0;
-      background: #85C1E9;
-      border: 3px solid #AED6F1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 4rem;
-      border-radius: 10px;
-      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
-    }
-    
-    .reward-message {
-      color: #F8F9FA;
-      font-size: 1.5rem;
-      margin: 1rem 0;
-      font-weight: 700;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-    }
-    
-    .reward-sub {
-      color: #AED6F1;
-      font-size: 1.1rem;
-      font-style: italic;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-    }
-    
-    @media (max-width: 600px) {
-      .reward-content {
-        padding: 2rem;
-      }
-
-      function showRewardPage() {
-        console.log('showRewardPage() function called!');
-        try {
-          // Hide form and confirmation
-          const form = document.getElementById('reflectionForm');
-          const confirmation = document.getElementById('confirmation');
-          const rewardPage = document.getElementById('rewardPage');
-          const cuteAnimal = document.getElementById('cuteAnimal');
-          
-          console.log('Elements found:', { form: !!form, confirmation: !!confirmation, rewardPage: !!rewardPage, cuteAnimal: !!cuteAnimal });
-          
-          if (form) form.style.display = 'none';
-          if (confirmation) confirmation.style.display = 'none';
-          if (rewardPage) rewardPage.style.display = 'flex';
-          
-          console.log('Reward page should now be visible');
-          
-          // Array of cute animal emojis and messages
-          const cuteAnimals = [
-            { emoji: '🐕', message: 'Good boy! You completed the debrief!' },
-            { emoji: '🐱', message: 'Purrfect! You\'re all done!' },
-            { emoji: '🐰', message: 'Some-bunny appreciates your feedback!' },
-            { emoji: '🐻', message: 'Bear-y good job on the debrief!' },
-            { emoji: '🐨', message: 'Koala-ty feedback submitted!' },
-            { emoji: '🦊', message: 'Fox-tastic work completing that!' },
-            { emoji: '🐼', message: 'Panda-stic effort on the debrief!' },
-            { emoji: '🐸', message: 'Toad-ally awesome job!' },
-            { emoji: '🐹', message: 'Ham-some work on the feedback!' },
-            { emoji: '🐧', message: 'Ice to meet a team player like you!' }
-          ];
-          
-          // Pick a random animal
-          const randomAnimal = cuteAnimals[Math.floor(Math.random() * cuteAnimals.length)];
-          console.log('Selected animal:', randomAnimal);
-          
-          if (cuteAnimal) {
-            cuteAnimal.innerHTML = `
-              <div style="font-size: 6rem; margin-bottom: 1rem;">${randomAnimal.emoji}</div>
-              <div style="font-size: 1.2rem; color: #2C3E50; font-weight: bold; text-shadow: none;">${randomAnimal.message}</div>
-            `;
-            console.log('Animal content set');
-          }
-          
-          // Add back button functionality
-          const backBtn = document.getElementById('backToFormBtn');
-          if (backBtn) {
-            backBtn.addEventListener('click', () => {
-              location.reload(); // Simple way to reset the form
-            });
-          }
-        } catch (error) {
-          console.error('Reward page error:', error);
-        }
-      }
-      
-      .reward-content h1 {
-        font-size: 2.5rem;
-      }
-      
-      .cute-animal {
-        height: 200px;
-        font-size: 3rem;
-      }
-    }
+    @media (max-width: 768px) {
       .container {
-        padding: 1.5rem;
-        margin: 0.5rem;
+        padding: 1rem;
+        margin: 0.25rem;
+        max-width: 98%;
+      }
+      
+      .cyrillic-text {
+        margin-bottom: 1rem;
+      }
+      
+      .cyrillic-main {
+        font-size: 1.6rem;
+        letter-spacing: 2px;
+        margin-bottom: 0.25rem;
+      }
+      
+      .cyrillic-sub {
+        font-size: 0.9rem;
+        letter-spacing: 1px;
       }
       
       h1 {
-        font-size: 2.5rem;
+        font-size: 2rem;
         letter-spacing: 2px;
+        margin-bottom: 0.25rem;
       }
       
       h1::before,
@@ -750,18 +526,88 @@
         display: none;
       }
       
+      p.prompt {
+        font-size: 0.85rem;
+        margin-bottom: 1rem;
+        padding: 0.75rem;
+        line-height: 1.4;
+      }
+      
+      .step-counter {
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+      }
+      
+      label {
+        font-size: 1rem;
+        margin-top: 1rem;
+        padding-bottom: 0.25rem;
+      }
+      
+      select {
+        height: 50px;
+        font-size: 1rem;
+        padding: 0.75rem;
+        margin-top: 0.5rem;
+      }
+      
+      textarea {
+        font-size: 1rem;
+        padding: 0.75rem;
+        min-height: 70px;
+        margin-top: 0.5rem;
+      }
+      
+      .char-counter {
+        font-size: 0.8rem;
+        margin-top: 0.25rem;
+      }
+      
+      .button-container {
+        margin-top: 1.5rem;
+        gap: 0.75rem;
+      }
+      
+      button {
+        padding: 1rem 1.5rem;
+        font-size: 1rem;
+        min-height: 50px;
+        min-width: 120px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .container {
+        padding: 0.75rem;
+        margin: 0.125rem;
+      }
+      
+      .cyrillic-main {
+        font-size: 1.4rem;
+      }
+      
+      h1 {
+        font-size: 1.8rem;
+      }
+      
+      p.prompt {
+        font-size: 0.8rem;
+        padding: 0.5rem;
+      }
+      
       .button-container {
         flex-direction: column;
+        gap: 0.75rem;
       }
       
       button {
         width: 100%;
+        padding: 0.875rem 1rem;
       }
     }
   </style>
 </head>
 <body>
-  <!-- Soviet-style geometric background shapes -->
   <div class="bg-shapes">
     <div class="shape shape-1"></div>
     <div class="shape shape-2"></div>
@@ -771,20 +617,12 @@
 
   <div class="overlay">
     <div class="container">
-      <!-- Cyrillic Graphics -->
       <div class="cyrillic-text">
         <div class="cyrillic-main">ПОЧАСОВОЙ ЖУРНАЛ</div>
         <div class="cyrillic-sub">СПИКИЗИ</div>
       </div>
       
-      <!-- Mood Theme Selector -->
-      <div class="mood-selector">
-        <button type="button" class="mood-btn active" data-theme="neutral" title="Neutral">😐</button>
-        <button type="button" class="mood-btn" data-theme="good" title="Good shift">😊</button>
-        <button type="button" class="mood-btn" data-theme="rough" title="Rough shift">😤</button>
-      </div>
-      
-      <h1>Debrief</h1>
+      <h1>EON Check In</h1>
       <p class="prompt">
         Feel free to answer any or all of these questions. Answers will help us to identify and address service issues.<br>
         <strong>Note:</strong> If you have an issue or concern that is more severe than this form allows for PLEASE bring it to someone you trust.
@@ -792,9 +630,10 @@
       
       <form id="reflectionForm" role="form">
         <div class="step-counter" id="stepCounter">Question 1 of 4</div>
-        <div class="step active" id="step-1" role="tabpanel" aria-labelledby="step-1-label">
-          <label for="q1-category" id="step-1-label">1. What's one thing that went really well tonight?</label>
-          <select id="q1-category" aria-describedby="q1-help">
+        
+        <div class="step active" id="step-1">
+          <label for="q1-category">1. What's one thing that went really well tonight?</label>
+          <select id="q1-category">
             <option value="">-- Select a category --</option>
             <option value="Food">Food</option>
             <option value="Guest interaction">Guest interaction</option>
@@ -802,16 +641,13 @@
             <option value="Timing">Timing</option>
             <option value="Other">Other</option>
           </select>
-          <div class="textarea-container">
-            <textarea id="q1" maxlength="250" placeholder="Want to elaborate? Drop a note here." aria-describedby="q1-counter"></textarea>
-            <button type="button" class="voice-btn" data-target="q1" title="Hold to record voice note">🎤</button>
-          </div>
+          <textarea id="q1" maxlength="250" placeholder="Want to elaborate? Drop a note here."></textarea>
           <div class="char-counter" id="q1-counter">0/250 characters</div>
         </div>
 
-        <div class="step" id="step-2" role="tabpanel" aria-labelledby="step-2-label">
-          <label for="q2-category" id="step-2-label">2. Care to highlight a moment of support that stood out tonight?</label>
-          <select id="q2-category" aria-describedby="q2-help">
+        <div class="step" id="step-2">
+          <label for="q2-category">2. Care to highlight a moment of support that stood out tonight?</label>
+          <select id="q2-category">
             <option value="">-- Select a support moment type --</option>
             <option value="Server to Server">Server to Server</option>
             <option value="Server to Runner">Server to Runner</option>
@@ -821,16 +657,13 @@
             <option value="Guest to Team">Guest to Team</option>
             <option value="Other / Not Sure">Other / Not Sure</option>
           </select>
-          <div class="textarea-container">
-            <textarea id="q2" maxlength="250" placeholder="What happened and who was involved?" aria-describedby="q2-counter"></textarea>
-            <button type="button" class="voice-btn" data-target="q2" title="Hold to record voice note">🎤</button>
-          </div>
+          <textarea id="q2" maxlength="250" placeholder="What happened and who was involved?"></textarea>
           <div class="char-counter" id="q2-counter">0/250 characters</div>
         </div>
 
-        <div class="step" id="step-3" role="tabpanel" aria-labelledby="step-3-label">
-          <label for="q3-category" id="step-3-label">3. Was there something that could have gone more smoothly tonight?</label>
-          <select id="q3-category" aria-describedby="q3-help">
+        <div class="step" id="step-3">
+          <label for="q3-category">3. Was there something that could have gone more smoothly tonight?</label>
+          <select id="q3-category">
             <option value="">-- What area was this about? --</option>
             <option value="Timing">Timing</option>
             <option value="Guest experience">Guest experience</option>
@@ -838,16 +671,13 @@
             <option value="Turns">Turns</option>
             <option value="Other">Other</option>
           </select>
-          <div class="textarea-container">
-            <textarea id="q3" maxlength="250" placeholder="Want to share more details?" aria-describedby="q3-counter"></textarea>
-            <button type="button" class="voice-btn" data-target="q3" title="Hold to record voice note">🎤</button>
-          </div>
+          <textarea id="q3" maxlength="250" placeholder="Want to share more details?"></textarea>
           <div class="char-counter" id="q3-counter">0/250 characters</div>
         </div>
 
-        <div class="step" id="step-4" role="tabpanel" aria-labelledby="step-4-label">
-          <label for="q4-category" id="step-4-label">4. Any thoughts on what we could tweak to make things smoother?</label>
-          <select id="q4-category" aria-describedby="q4-help">
+        <div class="step" id="step-4">
+          <label for="q4-category">4. Any thoughts on what we could improve to make things smoother?</label>
+          <select id="q4-category">
             <option value="">-- What area does this relate to? --</option>
             <option value="Communication">Communication</option>
             <option value="Timing">Timing</option>
@@ -856,10 +686,7 @@
             <option value="Guest experience">Guest experience</option>
             <option value="Other">Other</option>
           </select>
-          <div class="textarea-container">
-            <textarea id="q4" maxlength="250" placeholder="Even a small idea can help!" aria-describedby="q4-counter"></textarea>
-            <button type="button" class="voice-btn" data-target="q4" title="Hold to record voice note">🎤</button>
-          </div>
+          <textarea id="q4" maxlength="250" placeholder="Even a small idea can help!"></textarea>
           <div class="char-counter" id="q4-counter">0/250 characters</div>
         </div>
 
@@ -871,7 +698,6 @@
           </div>
         </div>
         
-        <!-- Separate final step buttons -->
         <div class="button-container" id="finalButtons" style="display: none;">
           <button type="button" id="backBtn4" class="btn-secondary">← Back</button>
           <button type="button" id="skipSubmitBtn" class="btn-primary">Skip/Submit</button>
@@ -888,230 +714,247 @@
 
   <script>
     console.log('Script is loading...');
-    
-    // Add error handling to catch issues
-    window.addEventListener('error', function(e) {
-      console.error('Script Error Details:');
-      console.error('Message:', e.message);
-      console.error('Filename:', e.filename);
-      console.error('Line:', e.lineno);
-      console.error('Column:', e.colno);
-      console.error('Error object:', e.error);
-    });
-
-    // Temporarily disable service worker to test
-    /*
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-          .then((registration) => {
-            console.log('SW registered: ', registration);
-          })
-          .catch((registrationError) => {
-            console.log('SW registration failed: ', registrationError);
-            // Don't let SW errors break the app
-          });
-      });
-    }
-    */
 
     document.addEventListener('DOMContentLoaded', function () {
       console.log('DOM loaded, initializing form...');
-      try {
-      const steps = document.querySelectorAll('.step');
-      const nextBtn = document.getElementById('nextBtn');
-      const skipBtn = document.getElementById('skipBtn');
-      const backBtn = document.getElementById('backBtn');
-      const stepCounter = document.getElementById('stepCounter');
-      const navigationButtons = document.getElementById('navigationButtons');
-      const confirmation = document.getElementById('confirmation');
-      const form = document.getElementById('reflectionForm');
+      
+      const elements = {
+        steps: document.querySelectorAll('.step'),
+        form: document.getElementById('reflectionForm'),
+        confirmation: document.getElementById('confirmation'),
+        stepCounter: document.getElementById('stepCounter'),
+        navigationButtons: document.getElementById('navigationButtons'),
+        finalButtons: document.getElementById('finalButtons')
+      };
       
       let currentStep = 0;
-
-      // Initialize character counters and auto-expanding textareas
-      function initCharCounters() {
-        const textareas = document.querySelectorAll('textarea');
-        textareas.forEach(textarea => {
-          const counterId = textarea.id + '-counter';
-          const counter = document.getElementById(counterId);
-          
-          // Auto-expand functionality
-          function autoExpand() {
-            textarea.style.height = 'auto';
-            textarea.style.height = Math.min(textarea.scrollHeight, 300) + 'px';
-          }
-          
-          function updateCounter() {
-            const remaining = textarea.value.length;
-            const max = textarea.maxLength;
-            counter.textContent = `${remaining}/${max} characters`;
-            
-            if (remaining > max * 0.9) {
-              counter.style.color = '#5DADE2';
-            } else {
-              counter.style.color = '#AED6F1';
-            }
-            
-            // Auto-expand as user types
-            autoExpand();
-          }
-          
-          textarea.addEventListener('input', updateCounter);
-          textarea.addEventListener('paste', () => {
-            setTimeout(updateCounter, 10); // Allow paste to complete
-          });
-          
-          // Initialize
-          updateCounter();
-          
-          // Better mobile keyboard handling
-          textarea.addEventListener('focus', () => {
-            if (window.innerWidth <= 768) {
-              setTimeout(() => {
-                textarea.scrollIntoView({ behavior: 'smooth', block: 'center' });
-              }, 300);
-            }
-          });
-        });
+      
+      // Debounce function for performance
+      function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+          const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+          };
+          clearTimeout(timeout);
+          timeout = setTimeout(later, wait);
+        };
       }
 
-      function showStep(index) {
-        // Remove active class from all steps
-        steps.forEach(step => step.classList.remove('active'));
-        
-        // Add active class to current step
-        if (steps[index]) {
-          steps[index].classList.add('active');
+      try {
+        // Initialize character counters and auto-expanding textareas
+        function initCharCounters() {
+          const textareas = document.querySelectorAll('textarea');
+          textareas.forEach(textarea => {
+            const counterId = textarea.id + '-counter';
+            const counter = document.getElementById(counterId);
+            
+            if (!counter) return;
+            
+            // Debounced auto-expand functionality
+            const debouncedAutoExpand = debounce(() => {
+              textarea.style.height = 'auto';
+              textarea.style.height = Math.min(textarea.scrollHeight, 300) + 'px';
+            }, 50);
+            
+            function updateCounter() {
+              try {
+                const remaining = textarea.value.length;
+                const max = textarea.maxLength;
+                counter.textContent = `${remaining}/${max} characters`;
+                
+                counter.style.color = remaining > max * 0.9 ? '#5DADE2' : '#AED6F1';
+                debouncedAutoExpand();
+              } catch (error) {
+                console.error('Counter update error:', error);
+              }
+            }
+            
+            // Event listeners
+            textarea.addEventListener('input', updateCounter);
+            textarea.addEventListener('paste', () => setTimeout(updateCounter, 10));
+            
+            updateCounter(); // Initialize
+          });
         }
-        
-        // Update step counter
-        stepCounter.textContent = `Question ${index + 1} of ${steps.length}`;
-        
-        // Update navigation
-        updateNavigation();
-      }
 
-      function updateNavigation() {
-        const buttonContainer = document.querySelector('.button-container');
-        if (!buttonContainer) {
-          console.error('Button container not found');
-          return;
+        function showStep(index) {
+          try {
+            console.log('Showing step:', index, 'Total steps:', elements.steps.length);
+            
+            if (!elements.steps[index]) {
+              console.error('Step not found:', index);
+              return;
+            }
+            
+            // Hide all steps using direct style manipulation
+            elements.steps.forEach((step, i) => {
+              step.style.display = 'none';
+              step.classList.remove('active');
+            });
+            
+            // Show current step using direct style manipulation
+            elements.steps[index].style.display = 'block';
+            elements.steps[index].classList.add('active');
+            
+            // Verify the changes
+            elements.steps.forEach((step, i) => {
+              const isVisible = step.style.display === 'block';
+              const hasActiveClass = step.classList.contains('active');
+              console.log(`Step ${i + 1} (${step.id}): Display=${step.style.display}, Active=${hasActiveClass}`);
+            });
+            
+            // Update step counter
+            if (elements.stepCounter) {
+              elements.stepCounter.textContent = `Question ${index + 1} of ${elements.steps.length}`;
+            }
+            
+            updateNavigation();
+          } catch (error) {
+            console.error('Show step error:', error);
+          }
         }
-        
-        try {
-          if (currentStep === steps.length - 1) {
-            // Final step: only show Back and Skip/Submit
-            buttonContainer.innerHTML = `
-              <button type="button" id="backBtn4" class="btn-secondary">← Back</button>
-              <button type="button" id="skipSubmitBtn" class="btn-primary">Skip/Submit</button>
-            `;
-            
-            // Re-attach event listeners for final step
-            const backBtn4 = document.getElementById('backBtn4');
-            const skipSubmitBtn = document.getElementById('skipSubmitBtn');
-            
-            if (backBtn4) {
-              backBtn4.addEventListener('click', () => {
-                currentStep--;
-                showStep(currentStep);
-              });
-            }
-            
-            if (skipSubmitBtn) {
-              skipSubmitBtn.addEventListener('click', submitForm);
-            }
-          } else {
-            // Regular navigation
-            buttonContainer.innerHTML = `
-              <button type="button" id="backBtn" class="btn-secondary" style="display: ${currentStep > 0 ? 'inline-block' : 'none'};">← Back</button>
-              <div style="display: flex; gap: 1rem;">
-                <button type="button" id="skipBtn" class="btn-secondary">Skip</button>
-                <button type="button" id="nextBtn" class="btn-primary">Next →</button>
-              </div>
-            `;
-            
-            // Re-attach event listeners for regular steps
-            const nextBtn = document.getElementById('nextBtn');
-            const skipBtn = document.getElementById('skipBtn');
+
+        function updateNavigation() {
+          try {
+            const isLastStep = currentStep === elements.steps.length - 1;
             const backBtn = document.getElementById('backBtn');
             
-            if (nextBtn) {
-              nextBtn.addEventListener('click', () => {
-                currentStep++;
-                showStep(currentStep);
-              });
+            // Show/hide navigation containers
+            if (elements.navigationButtons) {
+              elements.navigationButtons.style.display = isLastStep ? 'none' : 'flex';
+            }
+            if (elements.finalButtons) {
+              elements.finalButtons.style.display = isLastStep ? 'flex' : 'none';
             }
             
-            if (skipBtn) {
-              skipBtn.addEventListener('click', () => {
-                currentStep++;
-                showStep(currentStep);
-              });
-            }
-            
+            // Update back button visibility
             if (backBtn) {
-              backBtn.addEventListener('click', () => {
-                currentStep--;
-                showStep(currentStep);
-              });
+              backBtn.style.display = currentStep > 0 ? 'inline-block' : 'none';
             }
+          } catch (error) {
+            console.error('Navigation update error:', error);
           }
-        } catch (error) {
-          console.error('Navigation update error:', error);
         }
-      }
 
-      function submitForm() {
-        // Hide form and show confirmation
-        form.style.display = 'none';
-        confirmation.style.display = 'block';
+        function submitForm() {
+          try {
+            if (elements.form) elements.form.style.display = 'none';
+            if (elements.confirmation) elements.confirmation.style.display = 'block';
+            if (elements.stepCounter) elements.stepCounter.style.display = 'none';
+          } catch (error) {
+            console.error('Submit form error:', error);
+          }
+        }
+
+        // Navigation functions
+        function goNext() {
+          if (currentStep < elements.steps.length - 1) {
+            currentStep++;
+            showStep(currentStep);
+          }
+        }
+
+        function goBack() {
+          if (currentStep > 0) {
+            currentStep--;
+            showStep(currentStep);
+          }
+        }
+
+        // Static event listeners
+        function attachEventListeners() {
+          const eventMappings = [
+            { id: 'nextBtn', event: 'click', handler: goNext },
+            { id: 'skipBtn', event: 'click', handler: goNext },
+            { id: 'backBtn', event: 'click', handler: goBack },
+            { id: 'backBtn4', event: 'click', handler: goBack },
+            { id: 'skipSubmitBtn', event: 'click', handler: submitForm }
+          ];
+
+          eventMappings.forEach(({ id, event, handler }) => {
+            const element = document.getElementById(id);
+            if (element) {
+              element.addEventListener(event, handler);
+            }
+          });
+        }
+
+        // Initialize everything
+        initCharCounters();
+        // attachEventListeners(); // Removed to prevent double binding
+        showStep(currentStep);
         
-        // Show reward page instead of external redirect
-        console.log('About to show reward page in 2.5 seconds...');
-        setTimeout(() => {
-          console.log('Timeout fired, calling showRewardPage()');
-          showRewardPage();
-        }, 2500);
-      }
-
-      // Event listeners - will be dynamically attached in updateNavigation()
-      
-      // Keyboard navigation
-      document.addEventListener('keydown', (e) => {
-        try {
-          if (e.key === 'Enter' && e.ctrlKey) {
-            const nextBtn = document.getElementById('nextBtn');
-            const skipSubmitBtn = document.getElementById('skipSubmitBtn');
-            if (currentStep === steps.length - 1 && skipSubmitBtn) {
-              skipSubmitBtn.click();
-            } else if (nextBtn) {
-              nextBtn.click();
-            }
-          } else if (e.key === 'ArrowLeft' && e.altKey && currentStep > 0) {
-            const backBtn = currentStep === steps.length - 1 
-              ? document.getElementById('backBtn4')
-              : document.getElementById('backBtn');
-            if (backBtn) backBtn.click();
-          } else if (e.key === 'ArrowRight' && e.altKey && currentStep < steps.length - 1) {
-            const nextBtn = document.getElementById('nextBtn');
-            if (nextBtn) nextBtn.click();
-          }
-        } catch (error) {
-          console.error('Keyboard navigation error:', error);
+        // Data collection preparation
+        window.formData = {
+          sessionStart: Date.now(),
+          responses: {},
+          interactions: [],
+          deviceType: window.innerWidth <= 768 ? 'mobile' : 'desktop'
+        };
+        
+        // Track interactions
+        function trackInteraction(type, element, data = {}) {
+          window.formData.interactions.push({
+            timestamp: Date.now(),
+            type: type,
+            element: element,
+            data: data
+          });
         }
-      });
+        
+        // Enhanced event listeners with tracking
+        function attachEventListenersWithTracking() {
+          const eventMappings = [
+            { id: 'nextBtn', event: 'click', handler: () => { trackInteraction('next', currentStep); goNext(); } },
+            { id: 'skipBtn', event: 'click', handler: () => { trackInteraction('skip', currentStep); goNext(); } },
+            { id: 'backBtn', event: 'click', handler: () => { trackInteraction('back', currentStep); goBack(); } },
+            { id: 'backBtn4', event: 'click', handler: () => { trackInteraction('back', currentStep); goBack(); } },
+            { id: 'skipSubmitBtn', event: 'click', handler: () => { trackInteraction('submit', 'final'); collectFormData(); submitForm(); } }
+          ];
 
-      // Initialize the form
-      initCharCounters();
-      showStep(currentStep);
-      
+          eventMappings.forEach(({ id, event, handler }) => {
+            const element = document.getElementById(id);
+            if (element) {
+              element.addEventListener(event, handler);
+            }
+          });
+          
+          // Track form field interactions
+          document.querySelectorAll('select, textarea').forEach(element => {
+            element.addEventListener('focus', () => trackInteraction('focus', element.id));
+            element.addEventListener('change', () => trackInteraction('change', element.id, { value: element.value }));
+          });
+        }
+        
+        function collectFormData() {
+          // Collect all form responses
+          for (let i = 1; i <= 4; i++) {
+            const category = document.getElementById(`q${i}-category`)?.value || '';
+            const text = document.getElementById(`q${i}`)?.value || '';
+            window.formData.responses[`question${i}`] = {
+              category: category,
+              text: text,
+              completed: !!(category || text)
+            };
+          }
+          
+          window.formData.sessionEnd = Date.now();
+          window.formData.sessionDuration = window.formData.sessionEnd - window.formData.sessionStart;
+          
+          console.log('Form data collected:', window.formData);
+          // Ready for external service integration
+        }
+        
+        // Replace the original attachEventListeners call
+        attachEventListenersWithTracking();
+        
       } catch (error) {
         console.error('Initialization error:', error);
         // Fallback: at least show the first step
-        const firstStep = document.getElementById('step-1');
-        if (firstStep) {
-          firstStep.style.display = 'block';
+        if (elements.steps[0]) {
+          elements.steps[0].style.display = 'block';
         }
       }
     });
