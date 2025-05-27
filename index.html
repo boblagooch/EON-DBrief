@@ -221,7 +221,112 @@
       font-style: italic;
     }
     
-    /* Soviet-style header */
+    /* Mood Theme Selector */
+    .mood-selector {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+    
+    .mood-btn {
+      background: rgba(93, 109, 126, 0.3);
+      border: 2px solid rgba(174, 214, 241, 0.5);
+      padding: 0.8rem 1.2rem;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-width: 60px;
+      border-radius: 50%;
+    }
+    
+    .mood-btn:hover {
+      background: rgba(93, 109, 126, 0.5);
+      border-color: #AED6F1;
+      transform: scale(1.1);
+    }
+    
+    .mood-btn.active {
+      background: rgba(93, 173, 226, 0.6);
+      border-color: #AED6F1;
+      box-shadow: 0 0 15px rgba(174, 214, 241, 0.4);
+    }
+    
+    /* Voice Note Button */
+    .voice-btn {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      background: rgba(93, 173, 226, 0.8);
+      border: 1px solid #AED6F1;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .voice-btn:hover {
+      background: rgba(174, 214, 241, 0.9);
+      transform: scale(1.1);
+    }
+    
+    .voice-btn.recording {
+      background: #e74c3c;
+      animation: pulse-record 1s infinite;
+    }
+    
+    @keyframes pulse-record {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+    
+    /* Make textarea container relative for voice button positioning */
+    .textarea-container {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+    }
+    
+    /* Theme Variations */
+    body.theme-good {
+      background: linear-gradient(135deg, #27AE60 0%, #2ECC71 25%, #58D68D 75%, #85C1E9 100%);
+    }
+    
+    body.theme-good .container {
+      background: linear-gradient(135deg, 
+        rgba(39, 174, 96, 0.92) 0%, 
+        rgba(46, 204, 113, 0.95) 50%, 
+        rgba(88, 214, 141, 0.92) 100%
+      );
+      border-color: #58D68D;
+    }
+    
+    body.theme-good .container::before {
+      background: linear-gradient(45deg, #58D68D, #2ECC71, #58D68D, #2ECC71);
+    }
+    
+    body.theme-rough {
+      background: linear-gradient(135deg, #8B4513 0%, #A0522D 25%, #CD853F 75%, #DEB887 100%);
+    }
+    
+    body.theme-rough .container {
+      background: linear-gradient(135deg, 
+        rgba(139, 69, 19, 0.92) 0%, 
+        rgba(160, 82, 45, 0.95) 50%, 
+        rgba(205, 133, 63, 0.92) 100%
+      );
+      border-color: #DEB887;
+    }
+    
+    body.theme-rough .container::before {
+      background: linear-gradient(45deg, #DEB887, #CD853F, #DEB887, #CD853F);
+    }
     h1 {
       text-align: center;
       color: #D5DBDB;
@@ -672,15 +777,21 @@
         <div class="cyrillic-sub">СПИКИЗИ</div>
       </div>
       
+      <!-- Mood Theme Selector -->
+      <div class="mood-selector">
+        <button type="button" class="mood-btn active" data-theme="neutral" title="Neutral">😐</button>
+        <button type="button" class="mood-btn" data-theme="good" title="Good shift">😊</button>
+        <button type="button" class="mood-btn" data-theme="rough" title="Rough shift">😤</button>
+      </div>
+      
       <h1>Debrief</h1>
       <p class="prompt">
         Feel free to answer any or all of these questions. Answers will help us to identify and address service issues.<br>
         <strong>Note:</strong> If you have an issue or concern that is more severe than this form allows for PLEASE bring it to someone you trust.
       </p>
       
-      <div class="step-counter" id="stepCounter">Question 1 of 4</div>
-      
       <form id="reflectionForm" role="form">
+        <div class="step-counter" id="stepCounter">Question 1 of 4</div>
         <div class="step active" id="step-1" role="tabpanel" aria-labelledby="step-1-label">
           <label for="q1-category" id="step-1-label">1. What's one thing that went really well tonight?</label>
           <select id="q1-category" aria-describedby="q1-help">
@@ -691,7 +802,10 @@
             <option value="Timing">Timing</option>
             <option value="Other">Other</option>
           </select>
-          <textarea id="q1" maxlength="250" placeholder="Want to elaborate? Drop a note here." aria-describedby="q1-counter"></textarea>
+          <div class="textarea-container">
+            <textarea id="q1" maxlength="250" placeholder="Want to elaborate? Drop a note here." aria-describedby="q1-counter"></textarea>
+            <button type="button" class="voice-btn" data-target="q1" title="Hold to record voice note">🎤</button>
+          </div>
           <div class="char-counter" id="q1-counter">0/250 characters</div>
         </div>
 
@@ -707,7 +821,10 @@
             <option value="Guest to Team">Guest to Team</option>
             <option value="Other / Not Sure">Other / Not Sure</option>
           </select>
-          <textarea id="q2" maxlength="250" placeholder="What happened and who was involved?" aria-describedby="q2-counter"></textarea>
+          <div class="textarea-container">
+            <textarea id="q2" maxlength="250" placeholder="What happened and who was involved?" aria-describedby="q2-counter"></textarea>
+            <button type="button" class="voice-btn" data-target="q2" title="Hold to record voice note">🎤</button>
+          </div>
           <div class="char-counter" id="q2-counter">0/250 characters</div>
         </div>
 
@@ -721,7 +838,10 @@
             <option value="Turns">Turns</option>
             <option value="Other">Other</option>
           </select>
-          <textarea id="q3" maxlength="250" placeholder="Want to share more details?" aria-describedby="q3-counter"></textarea>
+          <div class="textarea-container">
+            <textarea id="q3" maxlength="250" placeholder="Want to share more details?" aria-describedby="q3-counter"></textarea>
+            <button type="button" class="voice-btn" data-target="q3" title="Hold to record voice note">🎤</button>
+          </div>
           <div class="char-counter" id="q3-counter">0/250 characters</div>
         </div>
 
@@ -736,7 +856,10 @@
             <option value="Guest experience">Guest experience</option>
             <option value="Other">Other</option>
           </select>
-          <textarea id="q4" maxlength="250" placeholder="Even a small idea can help!" aria-describedby="q4-counter"></textarea>
+          <div class="textarea-container">
+            <textarea id="q4" maxlength="250" placeholder="Even a small idea can help!" aria-describedby="q4-counter"></textarea>
+            <button type="button" class="voice-btn" data-target="q4" title="Hold to record voice note">🎤</button>
+          </div>
           <div class="char-counter" id="q4-counter">0/250 characters</div>
         </div>
 
