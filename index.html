@@ -4,9 +4,29 @@
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&display=swap" rel="stylesheet">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>How was your night?</title>
+  <meta name="theme-color" content="#2C3E50">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="EON Check In">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%232C3E50'/><text y='70' x='50' text-anchor='middle' font-size='60' fill='%23AED6F1'>🐕</text></svg>">
+  <link rel="manifest" href="data:application/json,{&quot;name&quot;:&quot;EON Hourly Log&quot;,&quot;short_name&quot;:&quot;EON&quot;,&quot;description&quot;:&quot;Team check-in app&quot;,&quot;start_url&quot;:&quot;./&quot;,&quot;display&quot;:&quot;standalone&quot;,&quot;background_color&quot;:&quot;%232C3E50&quot;,&quot;theme_color&quot;:&quot;%232C3E50&quot;,&quot;icons&quot;:[{&quot;src&quot;:&quot;data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' fill='%232C3E50'/><text y='350' x='256' text-anchor='middle' font-size='300' fill='%23AED6F1'>🐕</text></svg>&quot;,&quot;sizes&quot;:&quot;512x512&quot;,&quot;type&quot;:&quot;image/svg+xml&quot;}]}">
+  <title>EON Check In</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue:wght@400&family=Roboto+Condensed:wght@400;700&display=swap');
+    :root {
+      /* Enhanced Design System */
+      --glass-bg: rgba(255, 255, 255, 0.1);
+      --glass-border: rgba(255, 255, 255, 0.2);
+      --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      --glass-blur: blur(16px);
+      
+      --depth-1: 0 2px 8px rgba(0, 0, 0, 0.1);
+      --depth-2: 0 4px 16px rgba(0, 0, 0, 0.15);
+      --depth-3: 0 8px 24px rgba(0, 0, 0, 0.2);
+      --depth-4: 0 16px 32px rgba(0, 0, 0, 0.25);
+      
+      --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
     
     * {
       box-sizing: border-box;
@@ -347,44 +367,69 @@
       z-index: 10;
     }
     
+    /* Enhanced Glassmorphism Container */
     #app {
       background: 
         linear-gradient(135deg, 
-          rgba(52, 73, 94, 0.92) 0%, 
-          rgba(44, 62, 80, 0.95) 50%, 
-          rgba(93, 109, 126, 0.92) 100%
+          rgba(255, 255, 255, 0.12) 0%, 
+          rgba(255, 255, 255, 0.05) 50%, 
+          rgba(255, 255, 255, 0.08) 100%
         );
-      backdrop-filter: blur(10px);
-      border: 2px solid #AED6F1;
+      backdrop-filter: blur(20px) saturate(180%);
+      border: 2px solid rgba(255, 255, 255, 0.25);
       box-shadow: 
-        0 0 20px rgba(174, 214, 241, 0.2),
-        inset 0 0 15px rgba(174, 214, 241, 0.05);
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        0 0 0 1px rgba(255, 255, 255, 0.05);
       padding: 3rem;
-      max-width: 600px;
+      max-width: 640px;
       width: 100%;
       text-align: center;
       color: #FFF;
       position: relative;
-      animation: fadeIn 1s ease-in;
-      border-radius: 8px;
+      border-radius: 24px;
+      animation: fadeInScale 0.8s var(--transition-bounce);
+      overflow: hidden;
     }
     
     #app::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+      animation: scanLine 3s ease-in-out infinite;
+    }
+    
+    #app::after {
       content: '';
       position: absolute;
       top: -2px;
       left: -2px;
       right: -2px;
       bottom: -2px;
-      background: linear-gradient(45deg, #AED6F1, #5DADE2, #AED6F1, #5DADE2);
+      background: linear-gradient(45deg, 
+        rgba(174, 214, 241, 0.4), 
+        rgba(93, 173, 226, 0.6), 
+        rgba(133, 193, 233, 0.4), 
+        rgba(174, 214, 241, 0.6)
+      );
+      border-radius: 26px;
       z-index: -1;
-      animation: borderGlow 4s ease-in-out infinite alternate;
-      border-radius: 10px;
+      animation: borderFlow 6s ease-in-out infinite;
+      filter: blur(1px);
     }
     
-    @keyframes borderGlow {
-      0% { opacity: 0.5; }
-      100% { opacity: 1; }
+    @keyframes scanLine {
+      0%, 100% { transform: translateX(-100%); opacity: 0; }
+      50% { transform: translateX(100%); opacity: 1; }
+    }
+    
+    @keyframes borderFlow {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
     }
     
     @keyframes fadeIn {
@@ -476,61 +521,123 @@
       margin: 3rem 0;
     }
     
+    /* Enhanced 3D Mood Buttons */
     .mood-btn {
-      border: 3px solid #85C1E9;
+      border: 3px solid rgba(255, 255, 255, 0.3);
       border-radius: 50%;
       width: 120px;
       height: 120px;
       cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
       overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 3rem;
-    }
-    
-    /* Color-coded backgrounds for each mood */
-    .mood-btn[data-mood="great"] {
-      background: linear-gradient(135deg, rgba(39, 174, 96, 0.8), rgba(46, 204, 113, 0.8));
-    }
-    
-    .mood-btn[data-mood="okay"] {
-      background: linear-gradient(135deg, rgba(243, 156, 18, 0.8), rgba(230, 126, 34, 0.8));
-    }
-    
-    .mood-btn[data-mood="rough"] {
-      background: linear-gradient(135deg, rgba(231, 76, 60, 0.8), rgba(192, 57, 43, 0.8));
+      
+      /* 3D Effect Base */
+      background: 
+        linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05)),
+        radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.2), transparent 60%);
+      backdrop-filter: blur(10px);
+      box-shadow: 
+        0 8px 16px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+      
+      transition: var(--transition-smooth);
+      transform-style: preserve-3d;
+      perspective: 1000px;
     }
     
     .mood-btn::before {
       content: '';
       position: absolute;
       top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-      transition: left 0.5s;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      border-radius: 50%;
+      opacity: 0;
+      transition: var(--transition-smooth);
     }
     
-    .mood-btn:hover::before {
-      left: 100%;
+    .mood-btn::after {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      padding: 2px;
+      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      border-radius: 50%;
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      opacity: 0;
+      transition: var(--transition-smooth);
+    }
+    
+    /* Color-coded 3D backgrounds */
+    .mood-btn[data-mood="great"] {
+      background: 
+        linear-gradient(145deg, rgba(39, 174, 96, 0.3), rgba(39, 174, 96, 0.1)),
+        radial-gradient(circle at 30% 30%, rgba(46, 204, 113, 0.4), transparent 60%);
+      border-color: rgba(39, 174, 96, 0.5);
+    }
+    
+    .mood-btn[data-mood="okay"] {
+      background: 
+        linear-gradient(145deg, rgba(243, 156, 18, 0.3), rgba(243, 156, 18, 0.1)),
+        radial-gradient(circle at 30% 30%, rgba(230, 126, 34, 0.4), transparent 60%);
+      border-color: rgba(243, 156, 18, 0.5);
+    }
+    
+    .mood-btn[data-mood="rough"] {
+      background: 
+        linear-gradient(145deg, rgba(231, 76, 60, 0.3), rgba(231, 76, 60, 0.1)),
+        radial-gradient(circle at 30% 30%, rgba(192, 57, 43, 0.4), transparent 60%);
+      border-color: rgba(231, 76, 60, 0.5);
     }
     
     .mood-btn:hover {
-      transform: translateY(-5px) scale(1.05);
-      border-color: #AED6F1;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      transform: translateY(-8px) rotateX(10deg) rotateY(5deg) scale(1.05);
+      box-shadow: 
+        0 16px 32px rgba(0, 0, 0, 0.3),
+        inset 0 2px 0 rgba(255, 255, 255, 0.4),
+        inset 0 -2px 0 rgba(0, 0, 0, 0.2),
+        0 0 20px rgba(174, 214, 241, 0.4);
+    }
+    
+    .mood-btn:hover::before {
+      opacity: 1;
+    }
+    
+    .mood-btn:hover::after {
+      opacity: 1;
+    }
+    
+    .mood-btn:active {
+      transform: translateY(-4px) rotateX(5deg) scale(0.98);
+      transition: all 0.1s ease;
     }
     
     .mood-btn.selected {
-      border-color: #5DADE2;
-      background: linear-gradient(135deg, #5DADE2, #85C1E9);
-      color: #2C3E50;
-      transform: translateY(-5px) scale(1.1);
-      box-shadow: 0 15px 30px rgba(93, 173, 226, 0.4);
+      transform: translateY(-6px) rotateX(8deg) scale(1.08);
+      box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.4),
+        inset 0 3px 0 rgba(255, 255, 255, 0.5),
+        inset 0 -3px 0 rgba(0, 0, 0, 0.2),
+        0 0 30px rgba(93, 173, 226, 0.6);
+      border-color: rgba(93, 173, 226, 0.8);
+    }
+    
+    .mood-btn.selected::before {
+      opacity: 1;
+      background: linear-gradient(135deg, rgba(93, 173, 226, 0.2), rgba(174, 214, 241, 0.1));
+    }
+    
+    .mood-btn.selected::after {
+      opacity: 1;
+      background: linear-gradient(45deg, rgba(93, 173, 226, 0.4), rgba(174, 214, 241, 0.2), rgba(93, 173, 226, 0.4));
     }
     
     /* Form section with better transitions and visual cues */
@@ -1231,6 +1338,19 @@
 </head>
 
 <body>
+  <!-- Skeleton Loading Screen -->
+  <div class="skeleton-screen" id="skeletonScreen">
+    <div class="skeleton-container">
+      <div class="skeleton skeleton-header"></div>
+      <div class="skeleton skeleton-title"></div>
+      <div class="skeleton-buttons">
+        <div class="skeleton skeleton-btn"></div>
+        <div class="skeleton skeleton-btn"></div>
+        <div class="skeleton skeleton-btn"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- Splash Screen -->
   <div class="splash-screen" id="splashScreen">
     <div class="splash-content">
@@ -1300,9 +1420,33 @@
     document.addEventListener('DOMContentLoaded', function() {
       console.log('EON Check In - Loading...');
       
-      // Handle splash screen
+      // Enhanced loading sequence with skeleton
+      const skeletonScreen = document.getElementById('skeletonScreen');
       const splashScreen = document.getElementById('splashScreen');
       
+      // Hide skeleton after 1 second, show splash
+      setTimeout(() => {
+        skeletonScreen.classList.add('hidden');
+        setTimeout(() => {
+          skeletonScreen.style.display = 'none';
+        }, 800);
+      }, 1000);
+      
+      // Hide splash after 2 seconds (total 3 seconds)
+      setTimeout(() => {
+        splashScreen.classList.add('fade-out');
+        setTimeout(() => {
+          splashScreen.style.display = 'none';
+        }, 800);
+      }, 3000);
+      
+      // Register Service Worker for PWA (simplified)
+      if ('serviceWorker' in navigator) {
+        // Skip service worker for now - can add later if needed
+        console.log('Service Worker available but skipped for stability');
+      }
+      
+      // Handle splash screen
       setTimeout(() => {
         splashScreen.classList.add('fade-out');
         setTimeout(() => {
