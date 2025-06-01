@@ -1,34 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Debrief</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>How was your night?</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue:wght@400&family=Roboto+Condensed:wght@400;700&display=swap');
     
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
     
     body {
       font-family: 'Roboto Condensed', sans-serif;
-      margin: 0;
-      padding: 0;
       min-height: 100vh;
       background: linear-gradient(135deg, #2C3E50 0%, #34495E 25%, #5D6D7E 75%, #85929E 100%);
       position: relative;
       overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
     
-    /* Animated geometric shapes */
+    /* Enhanced background shapes */
     .bg-shapes {
       position: fixed;
       width: 100%;
       height: 100%;
       top: 0;
       left: 0;
-      z-index: 2;
+      z-index: 1;
       pointer-events: none;
       overflow: hidden;
     }
@@ -94,7 +96,7 @@
         radial-gradient(ellipse at center, rgba(44, 62, 80, 0.6) 0%, rgba(44, 62, 80, 0.8) 100%),
         linear-gradient(45deg, rgba(93, 173, 226, 0.1) 0%, rgba(133, 193, 233, 0.1) 100%);
       min-height: 100vh;
-      padding: 1rem;
+      padding: 2rem;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -102,7 +104,7 @@
       z-index: 10;
     }
     
-    .container {
+    #app {
       background: 
         linear-gradient(135deg, 
           rgba(52, 73, 94, 0.92) 0%, 
@@ -114,16 +116,17 @@
       box-shadow: 
         0 0 20px rgba(174, 214, 241, 0.2),
         inset 0 0 15px rgba(174, 214, 241, 0.05);
-      padding: 2.5rem;
-      max-width: 650px;
+      padding: 3rem;
+      max-width: 600px;
       width: 100%;
-      border-radius: 0;
+      text-align: center;
+      color: #FFF;
       position: relative;
       animation: fadeIn 1s ease-in;
-      color: #FFF;
+      border-radius: 8px;
     }
     
-    .container::before {
+    #app::before {
       content: '';
       position: absolute;
       top: -2px;
@@ -131,9 +134,9 @@
       right: -2px;
       bottom: -2px;
       background: linear-gradient(45deg, #AED6F1, #5DADE2, #AED6F1, #5DADE2);
-      border-radius: 0;
       z-index: -1;
       animation: borderGlow 4s ease-in-out infinite alternate;
+      border-radius: 10px;
     }
     
     @keyframes borderGlow {
@@ -146,253 +149,119 @@
       to { opacity: 1; transform: translateY(0) scale(1); }
     }
     
-    /* Cyrillic Graphics */
+    /* Enhanced Header Styling */
     .cyrillic-text {
-      text-align: center;
-      margin-bottom: 2rem;
-      position: relative;
+      margin-bottom: 1rem;
     }
     
     .cyrillic-main {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 2.2rem;
+      font-size: clamp(2.5rem, 6vw, 4rem);
       color: #D5DBDB;
       text-transform: uppercase;
-      letter-spacing: 3px;
+      letter-spacing: 6px;
       text-shadow: 
-        2px 2px 4px rgba(0, 0, 0, 0.8),
-        0 0 15px rgba(213, 219, 219, 0.3);
-      margin-bottom: 0.5rem;
-      position: relative;
+        3px 3px 6px rgba(0, 0, 0, 0.8),
+        0 0 20px rgba(213, 219, 219, 0.4);
+      margin-bottom: 0.75rem;
       font-weight: 900;
+      position: relative;
+      line-height: 0.9;
     }
     
     .cyrillic-main::before,
     .cyrillic-main::after {
-      content: '▬';
+      content: '◆';
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
       color: #5DADE2;
-      font-size: 1rem;
+      font-size: 0.6rem;
+      opacity: 0.8;
     }
     
-    .cyrillic-main::before {
-      left: -30px;
-    }
-    
-    .cyrillic-main::after {
-      right: -30px;
-    }
+    .cyrillic-main::before { left: -2.5rem; }
+    .cyrillic-main::after { right: -2.5rem; }
     
     .cyrillic-sub {
       font-family: 'Roboto Condensed', sans-serif;
-      font-size: 1.1rem;
+      font-size: clamp(0.9rem, 2.5vw, 1.2rem);
       color: #85C1E9;
-      font-weight: 900;
-      letter-spacing: 2px;
+      font-weight: 700;
+      letter-spacing: 4px;
       text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
       font-style: italic;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
     }
     
-    h1 {
-      text-align: center;
+    /* Main Question Styling */
+    .main-question {
+      margin-bottom: 1rem;
+    }
+    
+    .kak-dela {
       color: #D5DBDB;
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 3.5rem;
+      font-size: clamp(2rem, 5vw, 3rem);
       margin-bottom: 0.5rem;
       text-transform: uppercase;
       letter-spacing: 4px;
       text-shadow: 
-        0 0 8px rgba(213, 219, 219, 0.3),
+        0 0 10px rgba(213, 219, 219, 0.4),
         2px 2px 4px rgba(0, 0, 0, 0.6);
-      position: relative;
+      font-weight: 900;
     }
     
-    h1::after {
-      content: '★';
-      position: absolute;
-      right: -40px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 0.6em;
-      color: #5DADE2;
-      animation: pulse 2s infinite;
-    }
-    
-    h1::before {
-      content: '★';
-      position: absolute;
-      left: -40px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 0.6em;
-      color: #5DADE2;
-      animation: pulse 2s infinite 1s;
-    }
-    
-    @keyframes pulse {
-      0%, 100% { transform: translateY(-50%) scale(1); opacity: 1; }
-      50% { transform: translateY(-50%) scale(1.2); opacity: 0.7; }
-    }
-    
-    p.prompt {
-      font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-      font-size: 1rem;
-      color: #F8F9FA;
-      margin-bottom: 2rem;
-      text-align: center;
-      line-height: 1.6;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
-      border-left: 3px solid #AED6F1;
-      padding-left: 1rem;
-      background: rgba(0, 0, 0, 0.15);
-      padding: 1rem;
-      border-radius: 0;
-      font-weight: 400;
-    }
-    
-    .step-counter {
-      text-align: center;
+    .subtitle {
+      font-family: 'Roboto Condensed', sans-serif;
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
       color: #AED6F1;
-      font-size: 1.1rem;
-      margin-bottom: 1.5rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-    }
-    
-    label {
-      display: block;
-      margin-top: 1.5rem;
-      font-weight: 700;
-      color: #D5DBDB;
-      font-size: 1.2rem;
-      text-transform: uppercase;
+      font-weight: 500;
       letter-spacing: 1px;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-      border-bottom: 2px solid rgba(174, 214, 241, 0.3);
-      padding-bottom: 0.5rem;
-    }
-    
-    select {
-      width: 100%;
-      height: 60px;
-      margin-top: 1rem;
-      padding: 1rem;
-      font-family: 'Roboto Condensed', sans-serif;
-      border: 2px solid #85C1E9;
-      border-radius: 0;
-      background: linear-gradient(135deg, rgba(52, 73, 94, 0.9), rgba(93, 109, 126, 0.9));
-      color: #F8F9FA;
-      font-size: 1.1rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
-    }
-    
-    select:focus {
-      outline: none;
-      border-color: #AED6F1;
-      box-shadow: 0 0 15px rgba(174, 214, 241, 0.4);
-      background: linear-gradient(135deg, rgba(93, 109, 126, 0.9), rgba(52, 73, 94, 0.9));
-      transform: scale(1.02);
-    }
-    
-    select:hover {
-      border-color: #AED6F1;
-      transform: translateY(-1px);
-    }
-    
-    select option {
-      background: #34495E;
-      color: #F8F9FA;
-      padding: 0.5rem;
-    }
-    
-    textarea {
-      width: 100%;
-      min-height: 100px;
-      max-height: 300px;
-      margin-top: 1rem;
-      padding: 1rem;
-      font-family: 'Roboto Condensed', sans-serif;
-      border: 2px solid #85C1E9;
-      border-radius: 0;
-      background: linear-gradient(135deg, rgba(52, 73, 94, 0.8), rgba(93, 109, 126, 0.8));
-      color: #F8F9FA;
-      font-size: 1.1rem;
-      font-weight: 400;
-      resize: none;
-      transition: all 0.3s ease, height 0.2s ease;
-      text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
-      line-height: 1.5;
-    }
-    
-    textarea:focus {
-      outline: none;
-      border-color: #AED6F1;
-      box-shadow: 0 0 15px rgba(174, 214, 241, 0.4);
-      background: linear-gradient(135deg, rgba(93, 109, 126, 0.8), rgba(52, 73, 94, 0.8));
-      transform: scale(1.01);
-    }
-    
-    textarea::placeholder {
-      color: rgba(248, 249, 250, 0.6);
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
       font-style: italic;
+      margin-bottom: 2rem;
+      opacity: 0.9;
     }
     
-    .char-counter {
-      text-align: right;
-      font-size: 0.9rem;
-      color: #AED6F1;
-      margin-top: 0.5rem;
-      font-weight: 700;
-      text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
-    }
-    
-    .button-container {
-      margin-top: 2.5rem;
+    /* Improved mood buttons */
+    .mood-flex {
       display: flex;
-      gap: 1rem;
-      justify-content: space-between;
-      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      margin: 3rem 0;
     }
     
-    button {
-      padding: 1.2rem 2.5rem;
-      border: 2px solid #85C1E9;
-      border-radius: 0;
+    .mood-btn {
+      border: 3px solid #85C1E9;
+      border-radius: 50%;
+      width: 120px;
+      height: 120px;
       cursor: pointer;
-      font-size: 1.1rem;
-      font-family: 'Roboto Condensed', sans-serif;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      box-shadow: 
-        0 4px 8px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(174, 214, 241, 0.2);
-      transition: all 0.3s ease;
-      min-width: 140px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
       overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
     }
     
-    button:hover {
-      transform: translateY(-2px);
-      box-shadow: 
-        0 6px 12px rgba(0, 0, 0, 0.4),
-        inset 0 1px 0 rgba(174, 214, 241, 0.3);
+    /* Color-coded backgrounds for each mood */
+    .mood-btn[data-mood="great"] {
+      background: linear-gradient(135deg, rgba(39, 174, 96, 0.8), rgba(46, 204, 113, 0.8));
     }
     
-    button:active {
-      transform: translateY(0);
-      transition: all 0.1s ease;
+    .mood-btn[data-mood="okay"] {
+      background: linear-gradient(135deg, rgba(243, 156, 18, 0.8), rgba(230, 126, 34, 0.8));
     }
     
-    button::before {
+    .mood-btn[data-mood="rough"] {
+      background: linear-gradient(135deg, rgba(231, 76, 60, 0.8), rgba(192, 57, 43, 0.8));
+    }
+    
+    .mood-btn::before {
       content: '';
       position: absolute;
       top: 0;
@@ -403,210 +272,508 @@
       transition: left 0.5s;
     }
     
-    button:hover::before {
+    .mood-btn:hover::before {
       left: 100%;
     }
     
-    .btn-primary {
+    .mood-btn:hover {
+      transform: translateY(-5px) scale(1.05);
+      border-color: #AED6F1;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+    
+    .mood-btn.selected {
+      border-color: #5DADE2;
       background: linear-gradient(135deg, #5DADE2, #85C1E9);
       color: #2C3E50;
-      text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3);
+      transform: translateY(-5px) scale(1.1);
+      box-shadow: 0 15px 30px rgba(93, 173, 226, 0.4);
     }
     
-    .btn-primary:hover {
-      background: linear-gradient(135deg, #85C1E9, #AED6F1);
-      box-shadow: 
-        0 8px 16px rgba(0, 0, 0, 0.4),
-        0 0 20px rgba(174, 214, 241, 0.3);
-      transform: translateY(-3px) scale(1.02);
+    /* Form section with better transitions */
+    #form-section {
+      margin-top: 2rem;
+      text-align: left;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
-    .btn-secondary {
-      background: linear-gradient(135deg, rgba(44, 62, 80, 0.8), rgba(93, 109, 126, 0.8));
+    #form-section.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    textarea {
+      width: 100%;
+      min-height: 100px;
+      padding: 1rem;
+      margin: 1rem 0;
+      background: linear-gradient(135deg, rgba(52, 73, 94, 0.8), rgba(93, 109, 126, 0.8));
+      border: 2px solid #85C1E9;
+      border-radius: 8px;
       color: #F8F9FA;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+      font-family: 'Roboto Condensed', sans-serif;
+      font-size: 1rem;
+      resize: vertical;
+      transition: all 0.3s ease;
     }
     
-    .btn-secondary:hover {
-      background: linear-gradient(135deg, rgba(93, 109, 126, 0.8), rgba(133, 147, 158, 0.8));
-      box-shadow: 
-        0 8px 16px rgba(0, 0, 0, 0.4),
-        0 0 20px rgba(174, 214, 241, 0.2);
-      transform: translateY(-3px) scale(1.02);
+    textarea:focus {
+      outline: none;
+      border-color: #AED6F1;
+      box-shadow: 0 0 15px rgba(174, 214, 241, 0.4);
+      background: linear-gradient(135deg, rgba(93, 109, 126, 0.8), rgba(52, 73, 94, 0.8));
     }
     
-    .step {
-      display: none;
-      animation: slideInRight 0.4s ease-out;
+    textarea::placeholder {
+      color: rgba(248, 249, 250, 0.6);
+      font-style: italic;
     }
     
-    .step.active {
-      display: block !important;
+    /* Character counter */
+    .char-counter {
+      text-align: right;
+      font-size: 0.85rem;
+      color: #AED6F1;
+      margin-top: 0.25rem;
+      font-weight: 500;
+      transition: color 0.3s ease;
     }
     
-    @keyframes slideInRight {
-      from { 
-        opacity: 0; 
-        transform: translateX(30px);
+    .char-counter.warning { color: #F39C12; }
+    .char-counter.danger { color: #E74C3C; }
+    
+    /* Enhanced submit button */
+    #submit-btn {
+      background: linear-gradient(135deg, #5DADE2, #85C1E9);
+      border: 2px solid #85C1E9;
+      color: #2C3E50;
+      padding: 1rem 2rem;
+      font-family: 'Roboto Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      margin-top: 1rem;
+      border-radius: 6px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    #submit-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s;
+    }
+    
+    #submit-btn:hover::before {
+      left: 100%;
+    }
+    
+    #submit-btn:hover {
+      background: linear-gradient(135deg, #85C1E9, #AED6F1);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+    
+    #submit-btn.loading {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+    
+    #submit-btn.loading::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      margin: auto;
+      border: 2px solid transparent;
+      border-top: 2px solid #2C3E50;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    
+    @keyframes spin {
+      0% { transform: translate(-50%, -50%) rotate(0deg); }
+      100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+    
+    /* Messages */
+    #encouragement {
+      color: #AED6F1;
+      font-size: 1.1rem;
+      margin-top: 2rem;
+      font-style: italic;
+      animation: fadeIn 0.5s ease-in;
+    }
+    
+    /* Enhanced Thank You Page */
+    .thank-you-content {
+      text-align: center;
+      padding: 3rem 0;
+      opacity: 0;
+      animation: thankYouEntrance 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+    }
+    
+    @keyframes thankYouEntrance {
+      0% {
+        opacity: 0;
+        transform: scale(0.8) translateY(40px);
       }
-      to { 
-        opacity: 1; 
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+    
+    .thank-you-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 10vw, 5.5rem);
+      color: #85C1E9;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 1rem;
+      text-shadow: 
+        0 0 30px rgba(133, 193, 233, 0.7),
+        4px 4px 10px rgba(0, 0, 0, 0.8);
+      animation: titleSequence 3s ease-in-out infinite;
+      line-height: 0.9;
+      position: relative;
+    }
+    
+    .thank-you-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #5DADE2, transparent);
+      animation: underlineGlow 2s ease-in-out infinite alternate;
+    }
+    
+    .thank-you-message {
+      font-family: 'Roboto Condensed', sans-serif;
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      color: #D5DBDB;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 2rem;
+      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+      animation: messageSlide 1.5s ease-out 0.5s both;
+      position: relative;
+    }
+    
+    @keyframes titleSequence {
+      0%, 100% { 
+        text-shadow: 
+          0 0 30px rgba(133, 193, 233, 0.7),
+          4px 4px 10px rgba(0, 0, 0, 0.8);
+        transform: scale(1);
+      }
+      50% { 
+        text-shadow: 
+          0 0 40px rgba(133, 193, 233, 0.9),
+          4px 4px 10px rgba(0, 0, 0, 0.8);
+        transform: scale(1.02);
+      }
+    }
+    
+    @keyframes underlineGlow {
+      0% { 
+        opacity: 0.6;
+        width: 60px;
+      }
+      100% { 
+        opacity: 1;
+        width: 120px;
+      }
+    }
+    
+    @keyframes messageSlide {
+      0% {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      100% {
+        opacity: 1;
         transform: translateX(0);
       }
     }
     
-    .confirmation {
-      display: none;
-      text-align: center;
-      color: #AED6F1;
-      margin-top: 2rem;
-      animation: celebrationPulse 0.8s ease-out;
+    /* Professional Completion Graphic - Enhanced */
+    .completion-graphic {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      margin: 2.5rem auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     
-    @keyframes celebrationPulse {
-      0% { 
-        opacity: 0; 
-        transform: scale(0.8);
-      }
-      50% { 
-        transform: scale(1.05);
-      }
-      100% { 
-        opacity: 1; 
+    .check-circle {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #27AE60, #2ECC71);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 3;
+      box-shadow: 
+        0 0 25px rgba(39, 174, 96, 0.5),
+        inset 0 3px 15px rgba(255, 255, 255, 0.3),
+        0 8px 32px rgba(0, 0, 0, 0.3);
+      animation: checkPulse 3s ease-in-out infinite;
+      border: 3px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .checkmark {
+      color: white;
+      font-size: 2.8rem;
+      font-weight: 900;
+      text-shadow: 
+        0 3px 6px rgba(0, 0, 0, 0.4),
+        0 0 10px rgba(255, 255, 255, 0.3);
+      animation: checkmarkSequence 2s ease-out 0.8s both;
+    }
+    
+    .completion-rings {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+    }
+    
+    .ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 3px solid #85C1E9;
+      opacity: 0;
+    }
+    
+    .ring-1 {
+      width: 110px;
+      height: 110px;
+      top: 15px;
+      left: 15px;
+      animation: ringExpand 3s ease-out 0.3s infinite;
+      border-color: #5DADE2;
+    }
+    
+    .ring-2 {
+      width: 125px;
+      height: 125px;
+      top: 7.5px;
+      left: 7.5px;
+      animation: ringExpand 3s ease-out 0.7s infinite;
+      border-color: #85C1E9;
+    }
+    
+    .ring-3 {
+      width: 140px;
+      height: 140px;
+      top: 0;
+      left: 0;
+      animation: ringExpand 3s ease-out 1.1s infinite;
+      border-color: #AED6F1;
+    }
+    
+    @keyframes checkPulse {
+      0%, 100% { 
         transform: scale(1);
+        box-shadow: 
+          0 0 25px rgba(39, 174, 96, 0.5),
+          inset 0 3px 15px rgba(255, 255, 255, 0.3),
+          0 8px 32px rgba(0, 0, 0, 0.3);
+      }
+      33% { 
+        transform: scale(1.06);
+        box-shadow: 
+          0 0 35px rgba(39, 174, 96, 0.7),
+          inset 0 3px 15px rgba(255, 255, 255, 0.4),
+          0 12px 40px rgba(0, 0, 0, 0.4);
+      }
+      66% {
+        transform: scale(0.98);
+        box-shadow: 
+          0 0 20px rgba(39, 174, 96, 0.4),
+          inset 0 3px 15px rgba(255, 255, 255, 0.2),
+          0 6px 28px rgba(0, 0, 0, 0.2);
       }
     }
     
-    .confirmation h2 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-      color: #D5DBDB;
+    @keyframes checkmarkSequence {
+      0% {
+        opacity: 0;
+        transform: scale(0.2) rotate(-180deg);
+      }
+      30% {
+        opacity: 0.8;
+        transform: scale(1.3) rotate(10deg);
+      }
+      60% {
+        opacity: 1;
+        transform: scale(0.9) rotate(-5deg);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+      }
     }
     
-    .confirmation p {
-      font-size: 1.2rem;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-      color: #F8F9FA;
+    @keyframes ringExpand {
+      0% {
+        opacity: 0.9;
+        transform: scale(0.7);
+        border-width: 3px;
+      }
+      50% {
+        opacity: 0.6;
+        border-width: 2px;
+      }
+      100% {
+        opacity: 0;
+        transform: scale(1.4);
+        border-width: 1px;
+      }
     }
     
+    .fine-print-note {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(174, 214, 241, 0.3);
+    }
+    
+    .fine-print-note p {
+      font-family: 'Roboto Condensed', sans-serif;
+      font-size: 0.9rem;
+      color: #AED6F1;
+      line-height: 1.4;
+      text-align: left;
+      font-weight: 400;
+      opacity: 0.8;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+    }
+    
+    .fine-print-note strong {
+      color: #85C1E9;
+      font-weight: 700;
+    }
+    
+    /* Mobile optimizations */
     @media (max-width: 768px) {
-      .container {
+      .overlay {
         padding: 1rem;
-        margin: 0.25rem;
-        max-width: 98%;
       }
       
-      .cyrillic-text {
-        margin-bottom: 1rem;
-      }
-      
-      .cyrillic-main {
-        font-size: 1.6rem;
-        letter-spacing: 2px;
-        margin-bottom: 0.25rem;
-      }
-      
-      .cyrillic-sub {
-        font-size: 0.9rem;
-        letter-spacing: 1px;
+      #app {
+        padding: 2rem;
       }
       
       h1 {
         font-size: 2rem;
-        letter-spacing: 2px;
-        margin-bottom: 0.25rem;
       }
       
-      h1::before,
-      h1::after {
-        display: none;
+      .mood-flex {
+        gap: 1rem;
       }
       
-      p.prompt {
-        font-size: 0.85rem;
-        margin-bottom: 1rem;
-        padding: 0.75rem;
-        line-height: 1.4;
+      .mood-btn {
+        width: 100px;
+        height: 100px;
+        font-size: 2.5rem;
       }
       
-      .step-counter {
-        font-size: 0.9rem;
-        margin-bottom: 1rem;
+      .thank-you-title {
+        font-size: 2.5rem;
       }
       
-      label {
-        font-size: 1rem;
-        margin-top: 1rem;
-        padding-bottom: 0.25rem;
+      .thank-you-message {
+        font-size: 1.5rem;
       }
       
-      select {
-        height: 50px;
-        font-size: 1rem;
-        padding: 0.75rem;
-        margin-top: 0.5rem;
+      .completion-graphic {
+        width: 100px;
+        height: 100px;
+        margin: 2rem auto;
       }
       
-      textarea {
-        font-size: 1rem;
-        padding: 0.75rem;
-        min-height: 70px;
-        margin-top: 0.5rem;
+      .check-circle {
+        width: 70px;
+        height: 70px;
       }
       
-      .char-counter {
+      .checkmark {
+        font-size: 2rem;
+      }
+      
+      .ring-1 {
+        width: 85px;
+        height: 85px;
+        top: 7.5px;
+        left: 7.5px;
+      }
+      
+      .ring-2 {
+        width: 95px;
+        height: 95px;
+        top: 2.5px;
+        left: 2.5px;
+      }
+      
+      .ring-3 {
+        width: 100px;
+        height: 100px;
+        top: 0;
+        left: 0;
+      }
+      
+      .fine-print-note p {
         font-size: 0.8rem;
-        margin-top: 0.25rem;
-      }
-      
-      .button-container {
-        margin-top: 1.5rem;
-        gap: 0.75rem;
-      }
-      
-      button {
-        padding: 1rem 1.5rem;
-        font-size: 1rem;
-        min-height: 50px;
-        min-width: 120px;
       }
     }
     
     @media (max-width: 480px) {
-      .container {
-        padding: 0.75rem;
-        margin: 0.125rem;
-      }
-      
-      .cyrillic-main {
-        font-size: 1.4rem;
-      }
-      
-      h1 {
-        font-size: 1.8rem;
-      }
-      
-      p.prompt {
-        font-size: 0.8rem;
-        padding: 0.5rem;
-      }
-      
-      .button-container {
+      .mood-flex {
         flex-direction: column;
-        gap: 0.75rem;
+        align-items: center;
+        gap: 1.5rem;
       }
       
-      button {
-        width: 100%;
-        padding: 0.875rem 1rem;
+      .mood-btn {
+        width: 120px;
+        height: 120px;
+      }
+      
+      .thank-you-title {
+        font-size: 2rem;
+      }
+      
+      .thank-you-message {
+        font-size: 1.2rem;
       }
     }
   </style>
 </head>
+
 <body>
   <div class="bg-shapes">
     <div class="shape shape-1"></div>
@@ -614,349 +781,258 @@
     <div class="shape shape-3"></div>
     <div class="shape shape-4"></div>
   </div>
-
+  
   <div class="overlay">
-    <div class="container">
+    <div id="app">
       <div class="cyrillic-text">
-        <div class="cyrillic-main">ПОЧАСОВОЙ ЖУРНАЛ</div>
-        <div class="cyrillic-sub">СПИКИЗИ</div>
+        <div class="cyrillic-main">THE HOURLY LOG</div>
+        <div class="cyrillic-sub">СПИК ИЗИ</div>
+      </div>
+
+      <div class="main-question">
+        <h1 class="kak-dela">KAK DELA?</h1>
+        <p class="subtitle">Tell us about your night</p>
       </div>
       
-      <h1>EON Check In</h1>
-      <p class="prompt">
-        Feel free to answer any or all of these questions. Answers will help us to identify and address service issues.<br>
-        <strong>Note:</strong> If you have an issue or concern that is more severe than this form allows for PLEASE bring it to someone you trust.
-      </p>
+      <div id="mood-options" class="mood-flex">
+        <button class="mood-btn" data-mood="great" style="font-size:3rem;">🙌🏼</button>
+        <button class="mood-btn" data-mood="okay" style="font-size:3rem;">👍</button>
+        <button class="mood-btn" data-mood="rough" style="font-size:3rem;">🥴</button>
+      </div>
       
-      <form id="reflectionForm" role="form">
-        <div class="step-counter" id="stepCounter">Question 1 of 4</div>
-        
-        <div class="step active" id="step-1">
-          <label for="q1-category">1. What's one thing that went really well tonight?</label>
-          <select id="q1-category">
-            <option value="">-- Select a category --</option>
-            <option value="Food">Food</option>
-            <option value="Guest interaction">Guest interaction</option>
-            <option value="Teamwork">Teamwork</option>
-            <option value="Timing">Timing</option>
-            <option value="Other">Other</option>
-          </select>
-          <textarea id="q1" maxlength="250" placeholder="Want to elaborate? Drop a note here."></textarea>
-          <div class="char-counter" id="q1-counter">0/250 characters</div>
+      <div id="form-section" style="display:none;">
+        <textarea id="feedback" placeholder="Your thoughts..." maxlength="300"></textarea>
+        <div class="char-counter" id="feedback-counter">0/300 characters</div>
+        <div id="shoutout-section" style="display:none;">
+          <textarea id="shoutout" placeholder="Want to shout someone out? Totally optional." maxlength="200"></textarea>
+          <div class="char-counter" id="shoutout-counter">0/200 characters</div>
         </div>
-
-        <div class="step" id="step-2">
-          <label for="q2-category">2. Care to highlight a moment of support that stood out tonight?</label>
-          <select id="q2-category">
-            <option value="">-- Select a support moment type --</option>
-            <option value="Server to Server">Server to Server</option>
-            <option value="Server to Runner">Server to Runner</option>
-            <option value="Runner to Host">Runner to Host</option>
-            <option value="Host to Server">Host to Server</option>
-            <option value="Whole Team">Whole Team</option>
-            <option value="Guest to Team">Guest to Team</option>
-            <option value="Other / Not Sure">Other / Not Sure</option>
-          </select>
-          <textarea id="q2" maxlength="250" placeholder="What happened?"></textarea>
-          <div class="char-counter" id="q2-counter">0/250 characters</div>
-        </div>
-
-        <div class="step" id="step-3">
-          <label for="q3-category">3. Was there something that could have gone more smoothly tonight?</label>
-          <select id="q3-category">
-            <option value="">-- What area was this about? --</option>
-            <option value="Timing">Timing</option>
-            <option value="Guest experience">Guest experience</option>
-            <option value="Communication">Communication</option>
-            <option value="Turns">Turns</option>
-            <option value="Other">Other</option>
-          </select>
-          <textarea id="q3" maxlength="250" placeholder="Want to share more details?"></textarea>
-          <div class="char-counter" id="q3-counter">0/250 characters</div>
-        </div>
-
-        <div class="step" id="step-4">
-          <label for="q4-category">4. Any thoughts on what we could improve to make things smoother?</label>
-          <select id="q4-category">
-            <option value="">-- What area does this relate to? --</option>
-            <option value="Communication">Communication</option>
-            <option value="Timing">Timing</option>
-            <option value="Turns">Turns</option>
-            <option value="Team support">Team support</option>
-            <option value="Guest experience">Guest experience</option>
-            <option value="Other">Other</option>
-          </select>
-          <textarea id="q4" maxlength="250" placeholder="Even a small idea can help!"></textarea>
-          <div class="char-counter" id="q4-counter">0/250 characters</div>
-        </div>
-
-        <div class="button-container" id="navigationButtons">
-          <button type="button" id="backBtn" class="btn-secondary" style="display: none;">← Back</button>
-          <div style="display: flex; gap: 1rem;">
-            <button type="button" id="skipBtn" class="btn-secondary">Skip</button>
-            <button type="button" id="nextBtn" class="btn-primary">Next →</button>
-          </div>
-        </div>
-        
-        <div class="button-container" id="finalButtons" style="display: none;">
-          <button type="button" id="backBtn4" class="btn-secondary">← Back</button>
-          <button type="button" id="skipSubmitBtn" class="btn-primary">Submit</button>
-        </div>
-      </form>
+        <button id="submit-btn">Submit</button>
+      </div>
       
-      <div class="confirmation" id="confirmation">
-        <h2>Thanks for reflecting! 🌟</h2>
-        <p>Your feedback helps make our team stronger.</p>
-        <div style="font-size: 4rem; margin: 2rem 0;">🐕</div>
+      <div id="encouragement" style="display:none;">
+        Still with us? No rush—take your time or check back in later.
       </div>
     </div>
   </div>
 
   <script>
-    console.log('Script is loading...');
-
-    document.addEventListener('DOMContentLoaded', function () {
-      console.log('DOM loaded, initializing form...');
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('EON Check In - Loading...');
       
-      const elements = {
-        steps: document.querySelectorAll('.step'),
-        form: document.getElementById('reflectionForm'),
-        confirmation: document.getElementById('confirmation'),
-        stepCounter: document.getElementById('stepCounter'),
-        navigationButtons: document.getElementById('navigationButtons'),
-        finalButtons: document.getElementById('finalButtons')
+      // Form state with data collection
+      const formState = {
+        mood: null,
+        feedback: '',
+        shoutout: '',
+        startTime: Date.now(),
+        sessionId: generateSessionId()
       };
       
-      let currentStep = 0;
+      const elements = {
+        moodButtons: document.querySelectorAll('.mood-btn'),
+        formSection: document.getElementById('form-section'),
+        feedbackTextarea: document.getElementById('feedback'),
+        feedbackCounter: document.getElementById('feedback-counter'),
+        shoutoutSection: document.getElementById('shoutout-section'),
+        shoutoutTextarea: document.getElementById('shoutout'),
+        shoutoutCounter: document.getElementById('shoutout-counter'),
+        submitBtn: document.getElementById('submit-btn'),
+        encouragement: document.getElementById('encouragement'),
+        app: document.getElementById('app')
+      };
+
+      // Conditional prompts based on mood
+      const prompts = {
+        great: {
+          feedback: "What made tonight especially great?",
+          shoutout: true
+        },
+        okay: {
+          feedback: "What could have made tonight better?",
+          shoutout: false
+        },
+        rough: {
+          feedback: "What was the biggest challenge tonight?",
+          shoutout: false
+        }
+      };
+
+      // Generate unique session ID
+      function generateSessionId() {
+        return Date.now().toString(36) + Math.random().toString(36).substr(2);
+      }
+
+      // Character counter functionality
+      function setupCharCounter(textarea, counter) {
+        function updateCounter() {
+          const length = textarea.value.length;
+          const max = textarea.maxLength;
+          counter.textContent = `${length}/${max} characters`;
+          
+          // Color feedback
+          counter.classList.remove('warning', 'danger');
+          if (length > max * 0.9) {
+            counter.classList.add('danger');
+          } else if (length > max * 0.7) {
+            counter.classList.add('warning');
+          }
+          
+          // Auto-expand
+          textarea.style.height = 'auto';
+          textarea.style.height = Math.min(textarea.scrollHeight, 200) + 'px';
+        }
+        
+        textarea.addEventListener('input', updateCounter);
+        updateCounter();
+      }
+
+      // Setup character counters
+      setupCharCounter(elements.feedbackTextarea, elements.feedbackCounter);
+      setupCharCounter(elements.shoutoutTextarea, elements.shoutoutCounter);
+
+      // Handle mood selection
+      elements.moodButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          // Remove previous selections
+          elements.moodButtons.forEach(btn => btn.classList.remove('selected'));
+          
+          // Select this mood
+          this.classList.add('selected');
+          formState.mood = this.dataset.mood;
+          
+          // Show appropriate form
+          showForm(formState.mood);
+        });
+      });
+
+      function showForm(mood) {
+        const prompt = prompts[mood];
+        
+        // Update textarea placeholder
+        elements.feedbackTextarea.placeholder = prompt.feedback;
+        
+        // Show/hide shoutout section
+        elements.shoutoutSection.style.display = prompt.shoutout ? 'block' : 'none';
+        
+        // Show form with smooth transition
+        elements.formSection.style.display = 'block';
+        setTimeout(() => {
+          elements.formSection.classList.add('show');
+        }, 50);
+      }
+
+      // Inactivity encouragement with hide on interaction
+      let inactivityTimer;
       
-      // Debounce function for performance
-      function debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-          const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-          };
-          clearTimeout(timeout);
-          timeout = setTimeout(later, wait);
-        };
-      }
-
-      try {
-        // Initialize character counters and auto-expanding textareas
-        function initCharCounters() {
-          const textareas = document.querySelectorAll('textarea');
-          textareas.forEach(textarea => {
-            const counterId = textarea.id + '-counter';
-            const counter = document.getElementById(counterId);
-            
-            if (!counter) return;
-            
-            // Debounced auto-expand functionality
-            const debouncedAutoExpand = debounce(() => {
-              textarea.style.height = 'auto';
-              textarea.style.height = Math.min(textarea.scrollHeight, 300) + 'px';
+      function resetInactivityTimer() {
+        clearTimeout(inactivityTimer);
+        
+        // Hide encouragement message if it's showing and user interacts
+        if (elements.encouragement.style.display === 'block') {
+          elements.encouragement.style.transition = 'opacity 0.3s ease';
+          elements.encouragement.style.opacity = '0';
+          setTimeout(() => {
+            elements.encouragement.style.display = 'none';
+            elements.encouragement.style.opacity = '1'; // Reset for next time
+          }, 300);
+        }
+        
+        inactivityTimer = setTimeout(() => {
+          if (!formState.mood) {
+            elements.encouragement.style.display = 'block';
+            elements.encouragement.style.opacity = '0';
+            elements.encouragement.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => {
+              elements.encouragement.style.opacity = '1';
             }, 50);
-            
-            function updateCounter() {
-              try {
-                const remaining = textarea.value.length;
-                const max = textarea.maxLength;
-                counter.textContent = `${remaining}/${max} characters`;
-                
-                counter.style.color = remaining > max * 0.9 ? '#5DADE2' : '#AED6F1';
-                debouncedAutoExpand();
-              } catch (error) {
-                console.error('Counter update error:', error);
-              }
-            }
-            
-            // Event listeners
-            textarea.addEventListener('input', updateCounter);
-            textarea.addEventListener('paste', () => setTimeout(updateCounter, 10));
-            
-            updateCounter(); // Initialize
-          });
-        }
-
-        function showStep(index) {
-          try {
-            console.log('Showing step:', index, 'Total steps:', elements.steps.length);
-            
-            if (!elements.steps[index]) {
-              console.error('Step not found:', index);
-              return;
-            }
-            
-            // Hide all steps using direct style manipulation
-            elements.steps.forEach((step, i) => {
-              step.style.display = 'none';
-              step.classList.remove('active');
-            });
-            
-            // Show current step using direct style manipulation
-            elements.steps[index].style.display = 'block';
-            elements.steps[index].classList.add('active');
-            
-            // Verify the changes
-            elements.steps.forEach((step, i) => {
-              const isVisible = step.style.display === 'block';
-              const hasActiveClass = step.classList.contains('active');
-              console.log(`Step ${i + 1} (${step.id}): Display=${step.style.display}, Active=${hasActiveClass}`);
-            });
-            
-            // Update step counter
-            if (elements.stepCounter) {
-              elements.stepCounter.textContent = `Question ${index + 1} of ${elements.steps.length}`;
-            }
-            
-            updateNavigation();
-          } catch (error) {
-            console.error('Show step error:', error);
           }
-        }
-
-        function updateNavigation() {
-          try {
-            const isLastStep = currentStep === elements.steps.length - 1;
-            const backBtn = document.getElementById('backBtn');
-            
-            // Show/hide navigation containers
-            if (elements.navigationButtons) {
-              elements.navigationButtons.style.display = isLastStep ? 'none' : 'flex';
-            }
-            if (elements.finalButtons) {
-              elements.finalButtons.style.display = isLastStep ? 'flex' : 'none';
-            }
-            
-            // Update back button visibility
-            if (backBtn) {
-              backBtn.style.display = currentStep > 0 ? 'inline-block' : 'none';
-            }
-          } catch (error) {
-            console.error('Navigation update error:', error);
-          }
-        }
-
-        function submitForm() {
-          try {
-            if (elements.form) elements.form.style.display = 'none';
-            if (elements.confirmation) elements.confirmation.style.display = 'block';
-            if (elements.stepCounter) elements.stepCounter.style.display = 'none';
-          } catch (error) {
-            console.error('Submit form error:', error);
-          }
-        }
-
-        // Navigation functions
-        function goNext() {
-          if (currentStep < elements.steps.length - 1) {
-            currentStep++;
-            showStep(currentStep);
-          }
-        }
-
-        function goBack() {
-          if (currentStep > 0) {
-            currentStep--;
-            showStep(currentStep);
-          }
-        }
-
-        // Static event listeners
-        function attachEventListeners() {
-          const eventMappings = [
-            { id: 'nextBtn', event: 'click', handler: goNext },
-            { id: 'skipBtn', event: 'click', handler: goNext },
-            { id: 'backBtn', event: 'click', handler: goBack },
-            { id: 'backBtn4', event: 'click', handler: goBack },
-            { id: 'skipSubmitBtn', event: 'click', handler: submitForm }
-          ];
-
-          eventMappings.forEach(({ id, event, handler }) => {
-            const element = document.getElementById(id);
-            if (element) {
-              element.addEventListener(event, handler);
-            }
-          });
-        }
-
-        // Initialize everything
-        initCharCounters();
-        // attachEventListeners(); // Removed to prevent double binding
-        showStep(currentStep);
-        
-        // Data collection preparation
-        window.formData = {
-          sessionStart: Date.now(),
-          responses: {},
-          interactions: [],
-          deviceType: window.innerWidth <= 768 ? 'mobile' : 'desktop'
-        };
-        
-        // Track interactions
-        function trackInteraction(type, element, data = {}) {
-          window.formData.interactions.push({
-            timestamp: Date.now(),
-            type: type,
-            element: element,
-            data: data
-          });
-        }
-        
-        // Enhanced event listeners with tracking
-        function attachEventListenersWithTracking() {
-          const eventMappings = [
-            { id: 'nextBtn', event: 'click', handler: () => { trackInteraction('next', currentStep); goNext(); } },
-            { id: 'skipBtn', event: 'click', handler: () => { trackInteraction('skip', currentStep); goNext(); } },
-            { id: 'backBtn', event: 'click', handler: () => { trackInteraction('back', currentStep); goBack(); } },
-            { id: 'backBtn4', event: 'click', handler: () => { trackInteraction('back', currentStep); goBack(); } },
-            { id: 'skipSubmitBtn', event: 'click', handler: () => { trackInteraction('submit', 'final'); collectFormData(); submitForm(); } }
-          ];
-
-          eventMappings.forEach(({ id, event, handler }) => {
-            const element = document.getElementById(id);
-            if (element) {
-              element.addEventListener(event, handler);
-            }
-          });
-          
-          // Track form field interactions
-          document.querySelectorAll('select, textarea').forEach(element => {
-            element.addEventListener('focus', () => trackInteraction('focus', element.id));
-            element.addEventListener('change', () => trackInteraction('change', element.id, { value: element.value }));
-          });
-        }
-        
-        function collectFormData() {
-          // Collect all form responses
-          for (let i = 1; i <= 4; i++) {
-            const category = document.getElementById(`q${i}-category`)?.value || '';
-            const text = document.getElementById(`q${i}`)?.value || '';
-            window.formData.responses[`question${i}`] = {
-              category: category,
-              text: text,
-              completed: !!(category || text)
-            };
-          }
-          
-          window.formData.sessionEnd = Date.now();
-          window.formData.sessionDuration = window.formData.sessionEnd - window.formData.sessionStart;
-          
-          console.log('Form data collected:', window.formData);
-          // Ready for external service integration
-        }
-        
-        // Replace the original attachEventListeners call
-        attachEventListenersWithTracking();
-        
-      } catch (error) {
-        console.error('Initialization error:', error);
-        // Fallback: at least show the first step
-        if (elements.steps[0]) {
-          elements.steps[0].style.display = 'block';
-        }
+        }, 30000); // 30 seconds
       }
+      
+      document.addEventListener('click', resetInactivityTimer);
+      document.addEventListener('keypress', resetInactivityTimer);
+      resetInactivityTimer();
+
+      // Data storage (simulated - replace with real API)
+      function saveFormData(data) {
+        // For now, just log to console
+        console.log('Form data collected:', data);
+        
+        // Try to store in localStorage as backup (will work in real deployment)
+        try {
+          const existingData = JSON.parse(localStorage.getItem('eonCheckins') || '[]');
+          existingData.push(data);
+          localStorage.setItem('eonCheckins', JSON.stringify(existingData));
+          console.log('Data saved to localStorage successfully');
+        } catch (error) {
+          // This will happen in Claude artifacts - totally normal
+          console.log('LocalStorage not available in this environment (normal for Claude)');
+          console.log('Data would be saved in real deployment:', data);
+        }
+        
+        // In production, you would replace this with:
+        // fetch('/api/checkins', {
+        //   method: 'POST',
+        //   headers: { 'Content-Type': 'application/json' },
+        //   body: JSON.stringify(data)
+        // });
+      }
+
+      // Handle form submission
+      elements.submitBtn.addEventListener('click', function() {
+        // Show loading state
+        this.classList.add('loading');
+        this.textContent = '';
+        
+        // Collect form data
+        formState.feedback = elements.feedbackTextarea.value;
+        formState.shoutout = elements.shoutoutTextarea.value;
+        formState.endTime = Date.now();
+        formState.duration = formState.endTime - formState.startTime;
+        formState.timestamp = new Date().toISOString();
+        
+        // Simulate API call delay
+        setTimeout(() => {
+          saveFormData(formState);
+          showThankYouPage();
+        }, 1000);
+      });
+
+      function showThankYouPage() {
+        // Fade out current content
+        elements.app.style.transition = 'opacity 0.5s ease';
+        elements.app.style.opacity = '0';
+        
+        setTimeout(() => {
+          // Replace content
+          elements.app.innerHTML = `
+            <div class="thank-you-content">
+              <h1 class="thank-you-title">The<br>Hourly Log</h1>
+              <p class="thank-you-message">Thank you for sharing</p>
+              <div class="completion-graphic">
+                <div class="check-circle">
+                  <div class="checkmark">✓</div>
+                </div>
+                <div class="completion-rings">
+                  <div class="ring ring-1"></div>
+                  <div class="ring ring-2"></div>
+                  <div class="ring ring-3"></div>
+                </div>
+              </div>
+              
+              <div class="fine-print-note">
+                <p><strong>Note:</strong> The hourly log is for brief check-in at the end of shift. If you have any issues or concerns that are greater than this form allows, please check in with someone you trust.</p>
+              </div>
+            </div>
+          `;
+          
+          // Fade back in
+          elements.app.style.opacity = '1';
+        }, 500);
+      }
+
+      console.log('EON Check In initialized successfully!');
     });
   </script>
 </body>
