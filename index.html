@@ -533,18 +533,43 @@
       box-shadow: 0 15px 30px rgba(93, 173, 226, 0.4);
     }
     
-    /* Form section with better transitions */
+    /* Form section with better transitions and visual cues */
     #form-section {
       margin-top: 2rem;
       text-align: left;
       opacity: 0;
       transform: translateY(20px);
       transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
     }
     
     #form-section.show {
       opacity: 1;
       transform: translateY(0);
+    }
+    
+    #form-section.show::before {
+      content: '↓';
+      position: absolute;
+      top: -2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #5DADE2;
+      font-size: 1.5rem;
+      font-weight: 900;
+      animation: pulseArrow 2s ease-in-out 3;
+      opacity: 0.8;
+    }
+    
+    @keyframes pulseArrow {
+      0%, 100% {
+        transform: translateX(-50%) translateY(0);
+        opacity: 0.8;
+      }
+      50% {
+        transform: translateX(-50%) translateY(5px);
+        opacity: 1;
+      }
     }
     
     textarea {
@@ -1186,6 +1211,14 @@
         elements.formSection.style.display = 'block';
         setTimeout(() => {
           elements.formSection.classList.add('show');
+          
+          // Auto-scroll to form section on mobile with smooth animation
+          setTimeout(() => {
+            elements.formSection.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }, 300); // Wait for form animation to start
         }, 50);
       }
 
