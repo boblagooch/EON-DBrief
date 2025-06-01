@@ -1381,22 +1381,47 @@
       setupCharCounter(elements.feedbackTextarea, elements.feedbackCounter);
       setupCharCounter(elements.shoutoutTextarea, elements.shoutoutCounter);
 
-      // Handle mood selection with touch feedback
+      // Handle mood selection with enhanced touch feedback
       elements.moodButtons.forEach(button => {
         button.addEventListener('click', function() {
-          // Haptic feedback
+          console.log('Button clicked, attempting haptic feedback...');
+          
+          // Multiple haptic feedback attempts
           if ('vibrate' in navigator) {
-            navigator.vibrate(50); // 50ms gentle buzz
+            console.log('Vibration API available, vibrating...');
+            navigator.vibrate([100, 50, 100]); // Pattern: vibrate-pause-vibrate
+          } else {
+            console.log('Vibration API not available');
           }
           
-          // Visual feedback
-          this.style.transform = 'translateY(-3px) scale(1.08)';
+          // iOS-specific haptic feedback
+          if (window.DeviceMotionEvent && typeof DeviceMotionEvent.requestPermission === 'function') {
+            console.log('iOS haptic feedback attempt...');
+            // iOS haptic feedback (if available)
+            if ('vibrate' in navigator) {
+              navigator.vibrate(200);
+            }
+          }
+          
+          // Enhanced visual feedback
+          this.style.transition = 'all 0.1s ease';
+          this.style.transform = 'translateY(-8px) scale(1.15)';
+          this.style.boxShadow = '0 0 30px rgba(93, 173, 226, 0.8)';
+          
           setTimeout(() => {
-            this.style.transform = '';
+            this.style.transition = 'all 0.3s ease';
+            this.style.transform = 'translateY(-5px) scale(1.1)';
+            this.style.boxShadow = '0 15px 30px rgba(93, 173, 226, 0.4)';
           }, 150);
           
           // Remove previous selections
-          elements.moodButtons.forEach(btn => btn.classList.remove('selected'));
+          elements.moodButtons.forEach(btn => {
+            btn.classList.remove('selected');
+            if (btn !== this) {
+              btn.style.transform = '';
+              btn.style.boxShadow = '';
+            }
+          });
           
           // Select this mood
           this.classList.add('selected');
@@ -1406,17 +1431,36 @@
           showForm(formState.mood);
         });
         
-        // Touch press effect
+        // Enhanced touch press effect
         button.addEventListener('touchstart', function(e) {
-          this.style.transform = 'translateY(-1px) scale(1.02)';
+          console.log('Touch start detected');
+          this.style.transition = 'all 0.1s ease';
+          this.style.transform = 'translateY(-3px) scale(1.05)';
+          this.style.filter = 'brightness(1.2)';
         });
         
         button.addEventListener('touchend', function(e) {
-          setTimeout(() => {
-            if (!this.classList.contains('selected')) {
+          console.log('Touch end detected');
+          if (!this.classList.contains('selected')) {
+            setTimeout(() => {
+              this.style.transition = 'all 0.3s ease';
               this.style.transform = '';
-            }
-          }, 100);
+              this.style.filter = '';
+            }, 100);
+          }
+        });
+        
+        // Mouse events for desktop
+        button.addEventListener('mousedown', function(e) {
+          this.style.transition = 'all 0.1s ease';
+          this.style.transform = 'translateY(-3px) scale(1.05)';
+        });
+        
+        button.addEventListener('mouseup', function(e) {
+          if (!this.classList.contains('selected')) {
+            this.style.transition = 'all 0.3s ease';
+            this.style.transform = '';
+          }
         });
       });
 
@@ -1560,7 +1604,7 @@
               </div>
               
               <div class="fine-print-note">
-                <p><strong>Note:</strong> The hourly log is for brief check-in at the end of shift. If you have any issues or concerns that are greater than this form allows, please check in with someone you trust.</p>
+                <p><strong>Note:</strong> The hourly log is for brief check-ins at the end of shift. If you have any issues or concerns that are greater than this form allows, please check in with someone you trust.</p>
               </div>
             </div>
           `;
