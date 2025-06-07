@@ -737,6 +737,20 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
     
+    #submit-btn:disabled {
+      background: linear-gradient(135deg, rgba(93, 173, 226, 0.3), rgba(133, 193, 233, 0.3));
+      border-color: rgba(133, 193, 233, 0.3);
+      color: rgba(44, 62, 80, 0.5);
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    #submit-btn:disabled:hover {
+      transform: none;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
     #submit-btn::before {
       content: '';
       position: absolute;
@@ -1208,6 +1222,40 @@
       font-weight: 700;
     }
     
+    /* Connection Status */
+    .connection-status {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      z-index: 1000;
+      transition: all 0.3s ease;
+      opacity: 0;
+      pointer-events: none;
+    }
+    
+    .connection-status.show {
+      opacity: 1;
+    }
+    
+    .connection-status.online {
+      background: rgba(39, 174, 96, 0.9);
+      color: white;
+    }
+    
+    .connection-status.offline {
+      background: rgba(231, 76, 60, 0.9);
+      color: white;
+    }
+    
+    .connection-status.saving {
+      background: rgba(243, 156, 18, 0.9);
+      color: white;
+    }
+    
     /* Responsive Design */
     @media (max-width: 768px) {
       .overlay {
@@ -1333,6 +1381,11 @@
     You chose: <span class="mood-confirmation-emoji" id="confirmationEmoji">NO NOTES</span>
   </div>
   
+  <!-- Connection Status -->
+  <div class="connection-status" id="connectionStatus">
+    <span id="statusText">Checking connection...</span>
+  </div>
+  
   <div class="overlay">
     <div id="app">
       <div class="cyrillic-text">
@@ -1358,10 +1411,10 @@
       </div>
       
       <div id="form-section" style="display:none;">
-        <textarea id="feedback" placeholder="Your thoughts..." maxlength="300" 
+        <textarea id="feedback" placeholder="Your thoughts..." maxlength="200" 
                   aria-label="Share details about your evening" 
                   aria-describedby="feedback-counter"></textarea>
-        <div class="char-counter" id="feedback-counter">0/300 characters</div>
+        <div class="char-counter" id="feedback-counter">0/200 characters</div>
         <div id="shoutout-section" style="display:none;">
           <textarea id="shoutout" placeholder="Want to shout someone out? Totally optional." maxlength="200"
                     aria-label="Optional - Give recognition to a coworker" 
@@ -1377,7 +1430,35 @@
     </div>
   </div>
 
+  <!-- Firebase SDK -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-app-compat.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-firestore-compat.min.js"></script>
+
   <script>
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAlHgOqWmanxs1a1cgjj5zfKJJRK0gxEDE",
+      authDomain: "the-hourly-log.firebaseapp.com",
+      projectId: "the-hourly-log",
+      storageBucket: "the-hourly-log.firebasestorage.app",
+      messagingSenderId: "634486351257",
+      appId: "1:634486351257:web:8d19c3a3e497c4ace7df08"
+    };
+
+    // Initialize Firebase
+    let db = null;
+    let firebaseInitialized = false;
+
+    try {
+      firebase.initializeApp(firebaseConfig);
+      db = firebase.firestore();
+      firebaseInitialized = true;
+      console.log('Firebase initialized successfully');
+    } catch (error) {
+      console.error('Firebase initialization failed:', error);
+      showConnectionStatus('offline', 'Connection failed - saving locally');
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
       console.log('The Hourly Log - Initializing...');
       
@@ -1413,7 +1494,9 @@
         encouragement: document.getElementById('encouragement'),
         app: document.getElementById('app'),
         moodConfirmation: document.getElementById('moodConfirmation'),
-        confirmationEmoji: document.getElementById('confirmationEmoji')
+        confirmationEmoji: document.getElementById('confirmationEmoji'),
+        connectionStatus: document.getElementById('connectionStatus'),
+        statusText: document.getElementById('statusText')
       };
 
       // Mood configuration
@@ -1441,6 +1524,56 @@
       // Utility functions
       function generateSessionId() {
         return Date.now().toString(36) + Math.random().toString(36).substr(2);
+      }
+
+      function showConnectionStatus(status, message) {
+        if (!elements.connectionStatus || !elements.statusText) return;
+        
+        elements.statusText.textContent = message;
+        elements.connectionStatus.className = `connection-status ${status} show`;
+        
+        setTimeout(() => {
+          elements.connectionStatus.classList.remove('show');
+        }, 3000);
+      }
+
+      // Data saving function
+      async function saveFormData(data) {
+        console.log('Saving form data:', data);
+        
+        // Show saving status
+        showConnectionStatus('saving', 'Saving...');
+        
+        if (firebaseInitialized && db) {
+          try {
+            await db.collection('checkins').add(data);
+            console.log('Data saved to Firebase successfully');
+            showConnectionStatus('online', 'Saved successfully');
+            return true;
+          } catch (error) {
+            console.error('Error saving to Firebase:', error);
+            showConnectionStatus('offline', 'Save failed - trying local backup');
+            return saveToLocalStorage(data);
+          }
+        } else {
+          console.log('Firebase not available, saving locally');
+          return saveToLocalStorage(data);
+        }
+      }
+
+      function saveToLocalStorage(data) {
+        try {
+          const existingData = JSON.parse(localStorage.getItem('hourlyLogCheckins') || '[]');
+          existingData.push(data);
+          localStorage.setItem('hourlyLogCheckins', JSON.stringify(existingData));
+          console.log('Data saved to localStorage as backup');
+          showConnectionStatus('offline', 'Saved locally (backup)');
+          return true;
+        } catch (error) {
+          console.error('Error saving to localStorage:', error);
+          showConnectionStatus('offline', 'Save failed');
+          return false;
+        }
       }
 
       function showMoodConfirmation(mood) {
@@ -1478,10 +1611,29 @@
           
           textarea.style.height = 'auto';
           textarea.style.height = Math.min(textarea.scrollHeight, 200) + 'px';
+          
+          // Update submit button state for feedback textarea
+          if (textarea.id === 'feedback') {
+            updateSubmitButton();
+          }
         }
         
         textarea.addEventListener('input', updateCounter);
         updateCounter();
+      }
+
+      function updateSubmitButton() {
+        const feedbackLength = elements.feedbackTextarea.value.trim().length;
+        const isValid = feedbackLength >= 10;
+        
+        elements.submitBtn.disabled = !isValid;
+        
+        if (isValid) {
+          elements.submitBtn.textContent = 'Submit';
+        } else {
+          const remaining = 10 - feedbackLength;
+          elements.submitBtn.textContent = `Need ${remaining} more characters`;
+        }
       }
 
       function showForm(mood) {
@@ -1490,6 +1642,10 @@
         
         elements.feedbackTextarea.placeholder = prompt.feedback;
         elements.shoutoutSection.style.display = prompt.shoutout ? 'block' : 'none';
+        
+        // Initialize submit button as disabled
+        elements.submitBtn.disabled = true;
+        elements.submitBtn.textContent = 'Need 10 more characters';
         
         elements.formSection.style.display = 'block';
         setTimeout(() => {
@@ -1502,20 +1658,6 @@
             resetInactivityTimer();
           }, 300);
         }, 50);
-      }
-
-      function saveFormData(data) {
-        console.log('Form data collected:', data);
-        
-        try {
-          const existingData = JSON.parse(localStorage.getItem('hourlyLogCheckins') || '[]');
-          existingData.push(data);
-          localStorage.setItem('hourlyLogCheckins', JSON.stringify(existingData));
-          console.log('Data saved successfully');
-        } catch (error) {
-          console.log('Storage not available in this environment (normal for Claude)');
-          console.log('Data would be saved in real deployment:', data);
-        }
       }
 
       function showThankYouPage() {
@@ -1556,7 +1698,7 @@
               </div>
               
               <div class="fine-print-note">
-                <p><strong>Note:</strong> THL is for brief check-ins at the end of shift. If you have any issues or concerns that are greater than this form allows, please check in with someone you trust.</p>
+                <p><strong>Note:</strong> THL is for brief check-ins at the end of shift. If you have any issues or concerns that are greater than this form allows, please check in with someone you trust. Responses are anonymous and used only for operational improvements. Individual feedback cannot be traced back to specific staff members. Responses are reviewed by management after a 24-hour delay.</p>
               </div>
             </div>
           `;
@@ -1666,9 +1808,17 @@
       resetInactivityTimer();
 
       // Form submission
-      elements.submitBtn.addEventListener('click', function() {
+      elements.submitBtn.addEventListener('click', async function() {
+        // Double-check validation before submitting
+        const feedbackLength = elements.feedbackTextarea.value.trim().length;
+        if (feedbackLength < 10) {
+          showConnectionStatus('offline', 'Please add more detail to your feedback');
+          return;
+        }
+        
         this.classList.add('loading');
         this.textContent = '';
+        this.disabled = true;
         
         formState.feedback = elements.feedbackTextarea.value;
         formState.shoutout = elements.shoutoutTextarea.value;
@@ -1677,11 +1827,27 @@
         formState.timestamp = new Date().toISOString();
         formState.submitted = true;
         
-        setTimeout(() => {
-          saveFormData(formState);
-          showThankYouPage();
-        }, 1000);
+        const saveSuccess = await saveFormData(formState);
+        
+        if (saveSuccess) {
+          setTimeout(() => {
+            showThankYouPage();
+          }, 1000);
+        } else {
+          // Show error and allow retry
+          this.classList.remove('loading');
+          this.textContent = 'Retry';
+          this.disabled = false;
+          showConnectionStatus('offline', 'Save failed - please try again');
+        }
       });
+
+      // Check connection status on load
+      if (firebaseInitialized) {
+        showConnectionStatus('online', 'Connected');
+      } else {
+        showConnectionStatus('offline', 'Offline mode');
+      }
 
       console.log('The Hourly Log initialized successfully!');
     });
