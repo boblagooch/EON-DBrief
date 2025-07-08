@@ -1,4 +1,351 @@
-<!DOCTYPE html>
+      const prompts = {
+        great: {
+          feedback: "What made today especially great?",
+          shoutout: true
+        },
+        okay: {
+          feedback: "What stood out most about today?",
+          shoutout: false
+        },
+        rough: {
+          feedback: "What was the biggest challenge today?",
+          shoutout: false
+        }
+      };
+
+      // Utility functions
+      function generateSessionId() {
+        return Date.now().toString(36) + Math.random().toString(36).substr(2);
+      }
+
+      function showConnectionStatus(status, message) {
+        if (!elements.connectionStatus || !elements.statusText) return;
+        
+        elements.statusText.textContent = message;
+        elements.connectionStatus.className = `connection-status ${status} show`;
+        
+        setTimeout(() => {
+          elements.connectionStatus.classList.remove('show');
+        }, 3000);
+      }
+
+      // Data saving function
+      async function saveFormData(data) {
+        console.log('Saving form data:', data);
+        
+        // Show saving status
+        showConnectionStatus('saving', 'Saving...');
+        
+        if (firebaseInitialized && db) {
+          try {
+            await db.collection('checkins').add(data);
+            console.log('Data saved to Firebase successfully');
+            showConnectionStatus('online', 'Saved successfully');
+            return true;
+          } catch (error) {
+            console.error('Error saving to Firebase:', error);
+            showConnectionStatus('offline', 'Save failed - trying local backup');
+            return saveToLocalStorage(data);
+          }
+        } else {
+          console.log('Firebase not available, saving locally');
+          return saveToLocalStorage(data);
+        }
+      }
+
+      function saveToLocalStorage(data) {
+        try {
+          const existingData = JSON.parse(localStorage.getItem('hourlyLogCheckins') || '[]');
+          existingData.push(data);
+          localStorage.setItem('hourlyLogCheckins', JSON.stringify(existingData));
+          console.log('Data saved to localStorage as backup');
+          showConnectionStatus('offline', 'Saved locally (backup)');
+          return true;
+        } catch (error) {
+          console.error('Error saving to localStorage:', error);
+          showConnectionStatus('offline', 'Save failed');
+          return false;
+        }
+      }
+
+      function showMoodConfirmation(mood) {
+        try {
+          const message = moodMessages[mood];
+          if (elements.confirmationEmoji && elements.moodConfirmation) {
+            elements.confirmationEmoji.textContent = message;
+            elements.moodConfirmation.classList.add('show');
+            elements.moodConfirmation.classList.remove('fade-out');
+            
+            setTimeout(() => {
+              if (elements.moodConfirmation) {
+                elements.moodConfirmation.classList.add('fade-out');
+                elements.moodConfirmation.classList.remove('show');
+              }
+            }, 2500);
+          }
+        } catch (error) {
+          console.error('Error showing mood confirmation:', error);
+        }
+      }
+
+      function setupCharCounter(textarea, counter) {
+        function updateCounter() {
+          const length = textarea.value.length;
+          const max = textarea.maxLength;
+          counter.textContent = `${length}/${max} characters`;
+          
+          counter.classList.remove('warning', 'danger');
+          if (length > max * 0.9) {
+            counter.classList.add('danger');
+          } else if (length > max * 0.7) {
+            counter.classList.add('warning');
+          }
+          
+          textarea.style.height = 'auto';
+          textarea.style.height = Math.min(textarea.scrollHeight, 200) + 'px';
+          
+          // Update submit button state for feedback textarea
+          if (textarea.id === 'feedback') {
+            updateSubmitButton();
+          }
+        }
+        
+        textarea.addEventListener('input', updateCounter);
+        updateCounter();
+      }
+
+      function updateSubmitButton() {
+        const feedbackLength = elements.feedbackTextarea.value.trim().length;
+        const isValid = feedbackLength >= 10;
+        
+        elements.submitBtn.disabled = !isValid;
+        
+        if (isValid) {
+          elements.submitBtn.textContent = 'Submit';
+        } else {
+          const remaining = 10 - feedbackLength;
+          elements.submitBtn.textContent = `Need ${remaining} more characters`;
+        }
+      }
+
+      function showForm(mood) {
+        const prompt = prompts[mood];
+        formStarted = true;
+        
+        elements.feedbackTextarea.placeholder = prompt.feedback;
+        elements.shoutoutSection.style.display = prompt.shoutout ? 'block' : 'none';
+        
+        // Initialize submit button as disabled
+        elements.submitBtn.disabled = true;
+        elements.submitBtn.textContent = 'Need 10 more characters';
+        
+        elements.formSection.style.display = 'block';
+        setTimeout(() => {
+          elements.formSection.classList.add('show');
+          setTimeout(() => {
+            elements.formSection.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+            resetInactivityTimer();
+          }, 300);
+        }, 50);
+      }
+
+      function showThankYouPage() {
+        elements.app.style.transition = 'opacity 0.5s ease';
+        elements.app.style.opacity = '0';
+        
+        setTimeout(() => {
+          elements.app.innerHTML = `
+            <div class="thank-you-content">
+              <h1 class="thank-you-title">The<br>Hourly Log</h1>
+              <p class="thank-you-message">Спасибо за откровенность</p>
+              <div class="laika-tribute">
+                <div class="laika-container">
+                  <div class="laika-dog">🐕</div>
+                  <div class="laika-label-arrow">
+                    <div class="arrow-line">
+                      <div class="arrow-head"></div>
+                    </div>
+                    <div class="laika-label">это Лайка</div>
+                  </div>
+                  <div class="bark-bubble">
+                    <div class="bark-text">Молодец!</div>
+                  </div>
+                </div>
+                <div class="cosmic-rings">
+                  <div class="cosmic-ring ring-1"></div>
+                  <div class="cosmic-ring ring-2"></div>
+                  <div class="cosmic-ring ring-3"></div>
+                  <div class="cosmic-ring ring-4"></div>
+                </div>
+                <div class="star-field">
+                  <div class="star star-1">★</div>
+                  <div class="star star-2">✦</div>
+                  <div class="star star-3">✧</div>
+                  <div class="star star-4">★</div>
+                  <div class="star star-5">✦</div>
+                </div>
+              </div>
+              
+              <div class="fine-print-note">
+                <p><strong>Note:</strong> THL is for brief check-ins at the end of shift. If you have any issues or concerns that are greater than this form allows, please check in with someone you trust. Responses are anonymous and used only for operational improvements. Individual feedback cannot be traced back to specific staff members. Responses are reviewed by management after a 24-hour delay.</p>
+              </div>
+            </div>
+          `;
+          elements.app.style.opacity = '1';
+        }, 500);
+      }
+
+      // Setup character counters
+      setupCharCounter(elements.feedbackTextarea, elements.feedbackCounter);
+      setupCharCounter(elements.shoutoutTextarea, elements.shoutoutCounter);
+
+      // Mood button handlers
+      elements.moodButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          console.log('Mood button clicked:', this.dataset.mood);
+          
+          // Haptic feedback
+          if ('vibrate' in navigator) {
+            navigator.vibrate([100, 50, 100]);
+          }
+          
+          // Visual feedback
+          this.style.transition = 'all 0.1s ease';
+          this.style.transform = 'translateY(-8px) scale(1.15)';
+          this.style.boxShadow = '0 0 30px rgba(93, 173, 226, 0.8)';
+          
+          setTimeout(() => {
+            this.style.transition = 'all 0.3s ease';
+            this.style.transform = 'translateY(-5px) scale(1.1)';
+            this.style.boxShadow = '0 15px 30px rgba(93, 173, 226, 0.4)';
+          }, 150);
+          
+          // Remove previous selections
+          elements.moodButtons.forEach(btn => {
+            btn.classList.remove('selected');
+            if (btn !== this) {
+              btn.style.transform = '';
+              btn.style.boxShadow = '';
+            }
+          });
+          
+          // Select this mood
+          this.classList.add('selected');
+          formState.mood = this.dataset.mood;
+          
+          showMoodConfirmation(formState.mood);
+          showForm(formState.mood);
+        });
+        
+        // Touch feedback
+        button.addEventListener('touchstart', function(e) {
+          this.style.transition = 'all 0.1s ease';
+          this.style.transform = 'translateY(-3px) scale(1.05)';
+          this.style.filter = 'brightness(1.2)';
+        });
+        
+        button.addEventListener('touchend', function(e) {
+          if (!this.classList.contains('selected')) {
+            setTimeout(() => {
+              this.style.transition = 'all 0.3s ease';
+              this.style.transform = '';
+              this.style.filter = '';
+            }, 100);
+          }
+        });
+      });
+
+      // Inactivity timer
+      let inactivityTimer;
+      let formStarted = false;
+      
+      function resetInactivityTimer() {
+        clearTimeout(inactivityTimer);
+        
+        if (elements.encouragement.style.display === 'block') {
+          elements.encouragement.style.transition = 'opacity 0.3s ease';
+          elements.encouragement.style.opacity = '0';
+          setTimeout(() => {
+            elements.encouragement.style.display = 'none';
+            elements.encouragement.style.opacity = '1';
+          }, 300);
+        }
+        
+        inactivityTimer = setTimeout(() => {
+          if (!formState.submitted) {
+            let message = "Still with us? No rush—take your time or check back in later.";
+            
+            if (formStarted && !formState.mood) {
+              message = "Taking a moment to think? That's totally fine.";
+            } else if (formState.mood && !elements.feedbackTextarea.value.trim()) {
+              message = "Want to share anything more, or ready to submit?";
+            }
+            
+            elements.encouragement.textContent = message;
+            elements.encouragement.style.display = 'block';
+            elements.encouragement.style.opacity = '0';
+            elements.encouragement.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => {
+              elements.encouragement.style.opacity = '1';
+            }, 50);
+          }
+        }, 30000);
+      }
+      
+      document.addEventListener('click', resetInactivityTimer);
+      document.addEventListener('keypress', resetInactivityTimer);
+      resetInactivityTimer();
+
+      // Form submission
+      elements.submitBtn.addEventListener('click', async function() {
+        // Double-check validation before submitting
+        const feedbackLength = elements.feedbackTextarea.value.trim().length;
+        if (feedbackLength < 10) {
+          showConnectionStatus('offline', 'Please add more detail to your feedback');
+          return;
+        }
+        
+        this.classList.add('loading');
+        this.textContent = '';
+        this.disabled = true;
+        
+        formState.feedback = elements.feedbackTextarea.value;
+        formState.shoutout = elements.shoutoutTextarea.value;
+        formState.endTime = Date.now();
+        formState.duration = formState.endTime - formState.startTime;
+        formState.timestamp = new Date().toISOString();
+        formState.submitted = true;
+        
+        const saveSuccess = await saveFormData(formState);
+        
+        if (saveSuccess) {
+          setTimeout(() => {
+            showThankYouPage();
+          }, 1000);
+        } else {
+          // Show error and allow retry
+          this.classList.remove('loading');
+          this.textContent = 'Retry';
+          this.disabled = false;
+          showConnectionStatus('offline', 'Save failed - please try again');
+        }
+      });
+
+      // Check connection status on load
+      if (firebaseInitialized) {
+        showConnectionStatus('online', 'Connected');
+      } else {
+        showConnectionStatus('offline', 'Offline mode');
+      }
+
+      console.log('The Hourly Log initialized successfully!');
+    });
+  </script>
+</body>
+</html><!DOCTYPE html>
 <html lang="en">
 <head>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue:wght@400&family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -1395,24 +1742,24 @@
 
       <div class="main-question">
         <h1 class="kak-dela">Comrade... KAK DELA?</h1>
-        <p class="subtitle">How'd it go?</p>
+        <p class="subtitle">How was your shift? Choose one:</p>
       </div>
       
       <div id="mood-options" class="mood-flex">
         <button class="mood-btn" data-mood="great" style="font-size:3rem;" 
-                aria-label="Great night - I had a really good evening" 
-                role="button" tabindex="0">🤩</button>
+                aria-label="Great shift - I had a really good shift" 
+                role="button" tabindex="0">🙌🏼</button>
         <button class="mood-btn" data-mood="okay" style="font-size:3rem;" 
-                aria-label="Okay night - It was a decent evening" 
-                role="button" tabindex="0">😐</button>
+                aria-label="Okay shift - It was a decent shift" 
+                role="button" tabindex="0">👍🏼</button>
         <button class="mood-btn" data-mood="rough" style="font-size:3rem;" 
-                aria-label="Rough night - I had a difficult evening" 
-                role="button" tabindex="0">😭</button>
+                aria-label="Rough shift - I had a difficult shift" 
+                role="button" tabindex="0">🥴</button>
       </div>
       
       <div id="form-section" style="display:none;">
         <textarea id="feedback" placeholder="Your thoughts..." maxlength="200" 
-                  aria-label="Share details about your evening" 
+                  aria-label="Share details about your shift" 
                   aria-describedby="feedback-counter"></textarea>
         <div class="char-counter" id="feedback-counter">0/200 characters</div>
         <div id="shoutout-section" style="display:none;">
@@ -1508,349 +1855,15 @@
 
       const prompts = {
         great: {
-          feedback: "What made tonight especially great?",
+          feedback: "What made today especially great?",
           shoutout: true
         },
         okay: {
-          feedback: "What stood out most about tonight?",
+          feedback: "What stood out most about today?",
           shoutout: false
         },
         rough: {
-          feedback: "What was the biggest challenge tonight?",
+          feedback: "What was the biggest challenge today?",
           shoutout: false
         }
       };
-
-      // Utility functions
-      function generateSessionId() {
-        return Date.now().toString(36) + Math.random().toString(36).substr(2);
-      }
-
-      function showConnectionStatus(status, message) {
-        if (!elements.connectionStatus || !elements.statusText) return;
-        
-        elements.statusText.textContent = message;
-        elements.connectionStatus.className = `connection-status ${status} show`;
-        
-        setTimeout(() => {
-          elements.connectionStatus.classList.remove('show');
-        }, 3000);
-      }
-
-      // Data saving function
-      async function saveFormData(data) {
-        console.log('Saving form data:', data);
-        
-        // Show saving status
-        showConnectionStatus('saving', 'Saving...');
-        
-        if (firebaseInitialized && db) {
-          try {
-            await db.collection('checkins').add(data);
-            console.log('Data saved to Firebase successfully');
-            showConnectionStatus('online', 'Saved successfully');
-            return true;
-          } catch (error) {
-            console.error('Error saving to Firebase:', error);
-            showConnectionStatus('offline', 'Save failed - trying local backup');
-            return saveToLocalStorage(data);
-          }
-        } else {
-          console.log('Firebase not available, saving locally');
-          return saveToLocalStorage(data);
-        }
-      }
-
-      function saveToLocalStorage(data) {
-        try {
-          const existingData = JSON.parse(localStorage.getItem('hourlyLogCheckins') || '[]');
-          existingData.push(data);
-          localStorage.setItem('hourlyLogCheckins', JSON.stringify(existingData));
-          console.log('Data saved to localStorage as backup');
-          showConnectionStatus('offline', 'Saved locally (backup)');
-          return true;
-        } catch (error) {
-          console.error('Error saving to localStorage:', error);
-          showConnectionStatus('offline', 'Save failed');
-          return false;
-        }
-      }
-
-      function showMoodConfirmation(mood) {
-        try {
-          const message = moodMessages[mood];
-          if (elements.confirmationEmoji && elements.moodConfirmation) {
-            elements.confirmationEmoji.textContent = message;
-            elements.moodConfirmation.classList.add('show');
-            elements.moodConfirmation.classList.remove('fade-out');
-            
-            setTimeout(() => {
-              if (elements.moodConfirmation) {
-                elements.moodConfirmation.classList.add('fade-out');
-                elements.moodConfirmation.classList.remove('show');
-              }
-            }, 2500);
-          }
-        } catch (error) {
-          console.error('Error showing mood confirmation:', error);
-        }
-      }
-
-      function setupCharCounter(textarea, counter) {
-        function updateCounter() {
-          const length = textarea.value.length;
-          const max = textarea.maxLength;
-          counter.textContent = `${length}/${max} characters`;
-          
-          counter.classList.remove('warning', 'danger');
-          if (length > max * 0.9) {
-            counter.classList.add('danger');
-          } else if (length > max * 0.7) {
-            counter.classList.add('warning');
-          }
-          
-          textarea.style.height = 'auto';
-          textarea.style.height = Math.min(textarea.scrollHeight, 200) + 'px';
-          
-          // Update submit button state for feedback textarea
-          if (textarea.id === 'feedback') {
-            updateSubmitButton();
-          }
-        }
-        
-        textarea.addEventListener('input', updateCounter);
-        updateCounter();
-      }
-
-      function updateSubmitButton() {
-        const feedbackLength = elements.feedbackTextarea.value.trim().length;
-        const isValid = feedbackLength >= 10;
-        
-        elements.submitBtn.disabled = !isValid;
-        
-        if (isValid) {
-          elements.submitBtn.textContent = 'Submit';
-        } else {
-          const remaining = 10 - feedbackLength;
-          elements.submitBtn.textContent = `Need ${remaining} more characters`;
-        }
-      }
-
-      function showForm(mood) {
-        const prompt = prompts[mood];
-        formStarted = true;
-        
-        elements.feedbackTextarea.placeholder = prompt.feedback;
-        elements.shoutoutSection.style.display = prompt.shoutout ? 'block' : 'none';
-        
-        // Initialize submit button as disabled
-        elements.submitBtn.disabled = true;
-        elements.submitBtn.textContent = 'Need 10 more characters';
-        
-        elements.formSection.style.display = 'block';
-        setTimeout(() => {
-          elements.formSection.classList.add('show');
-          setTimeout(() => {
-            elements.formSection.scrollIntoView({
-              behavior: 'smooth',
-              block: 'start'
-            });
-            resetInactivityTimer();
-          }, 300);
-        }, 50);
-      }
-
-      function showThankYouPage() {
-        elements.app.style.transition = 'opacity 0.5s ease';
-        elements.app.style.opacity = '0';
-        
-        setTimeout(() => {
-          elements.app.innerHTML = `
-            <div class="thank-you-content">
-              <h1 class="thank-you-title">The<br>Hourly Log</h1>
-              <p class="thank-you-message">Спасибо за откровенность</p>
-              <div class="laika-tribute">
-                <div class="laika-container">
-                  <div class="laika-dog">🐕</div>
-                  <div class="laika-label-arrow">
-                    <div class="arrow-line">
-                      <div class="arrow-head"></div>
-                    </div>
-                    <div class="laika-label">это Лайка</div>
-                  </div>
-                  <div class="bark-bubble">
-                    <div class="bark-text">Молодец!</div>
-                  </div>
-                </div>
-                <div class="cosmic-rings">
-                  <div class="cosmic-ring ring-1"></div>
-                  <div class="cosmic-ring ring-2"></div>
-                  <div class="cosmic-ring ring-3"></div>
-                  <div class="cosmic-ring ring-4"></div>
-                </div>
-                <div class="star-field">
-                  <div class="star star-1">★</div>
-                  <div class="star star-2">✦</div>
-                  <div class="star star-3">✧</div>
-                  <div class="star star-4">★</div>
-                  <div class="star star-5">✦</div>
-                </div>
-              </div>
-              
-              <div class="fine-print-note">
-                <p><strong>Note:</strong> THL is for brief check-ins at the end of shift. If you have any issues or concerns that are greater than this form allows, please check in with someone you trust. Responses are anonymous and used only for operational improvements. Individual feedback cannot be traced back to specific staff members. Responses are reviewed by management after a 24-hour delay.</p>
-              </div>
-            </div>
-          `;
-          elements.app.style.opacity = '1';
-        }, 500);
-      }
-
-      // Setup character counters
-      setupCharCounter(elements.feedbackTextarea, elements.feedbackCounter);
-      setupCharCounter(elements.shoutoutTextarea, elements.shoutoutCounter);
-
-      // Mood button handlers
-      elements.moodButtons.forEach(button => {
-        button.addEventListener('click', function() {
-          console.log('Mood button clicked:', this.dataset.mood);
-          
-          // Haptic feedback
-          if ('vibrate' in navigator) {
-            navigator.vibrate([100, 50, 100]);
-          }
-          
-          // Visual feedback
-          this.style.transition = 'all 0.1s ease';
-          this.style.transform = 'translateY(-8px) scale(1.15)';
-          this.style.boxShadow = '0 0 30px rgba(93, 173, 226, 0.8)';
-          
-          setTimeout(() => {
-            this.style.transition = 'all 0.3s ease';
-            this.style.transform = 'translateY(-5px) scale(1.1)';
-            this.style.boxShadow = '0 15px 30px rgba(93, 173, 226, 0.4)';
-          }, 150);
-          
-          // Remove previous selections
-          elements.moodButtons.forEach(btn => {
-            btn.classList.remove('selected');
-            if (btn !== this) {
-              btn.style.transform = '';
-              btn.style.boxShadow = '';
-            }
-          });
-          
-          // Select this mood
-          this.classList.add('selected');
-          formState.mood = this.dataset.mood;
-          
-          showMoodConfirmation(formState.mood);
-          showForm(formState.mood);
-        });
-        
-        // Touch feedback
-        button.addEventListener('touchstart', function(e) {
-          this.style.transition = 'all 0.1s ease';
-          this.style.transform = 'translateY(-3px) scale(1.05)';
-          this.style.filter = 'brightness(1.2)';
-        });
-        
-        button.addEventListener('touchend', function(e) {
-          if (!this.classList.contains('selected')) {
-            setTimeout(() => {
-              this.style.transition = 'all 0.3s ease';
-              this.style.transform = '';
-              this.style.filter = '';
-            }, 100);
-          }
-        });
-      });
-
-      // Inactivity timer
-      let inactivityTimer;
-      let formStarted = false;
-      
-      function resetInactivityTimer() {
-        clearTimeout(inactivityTimer);
-        
-        if (elements.encouragement.style.display === 'block') {
-          elements.encouragement.style.transition = 'opacity 0.3s ease';
-          elements.encouragement.style.opacity = '0';
-          setTimeout(() => {
-            elements.encouragement.style.display = 'none';
-            elements.encouragement.style.opacity = '1';
-          }, 300);
-        }
-        
-        inactivityTimer = setTimeout(() => {
-          if (!formState.submitted) {
-            let message = "Still with us? No rush—take your time or check back in later.";
-            
-            if (formStarted && !formState.mood) {
-              message = "Taking a moment to think? That's totally fine.";
-            } else if (formState.mood && !elements.feedbackTextarea.value.trim()) {
-              message = "Want to share anything more, or ready to submit?";
-            }
-            
-            elements.encouragement.textContent = message;
-            elements.encouragement.style.display = 'block';
-            elements.encouragement.style.opacity = '0';
-            elements.encouragement.style.transition = 'opacity 0.5s ease';
-            setTimeout(() => {
-              elements.encouragement.style.opacity = '1';
-            }, 50);
-          }
-        }, 30000);
-      }
-      
-      document.addEventListener('click', resetInactivityTimer);
-      document.addEventListener('keypress', resetInactivityTimer);
-      resetInactivityTimer();
-
-      // Form submission
-      elements.submitBtn.addEventListener('click', async function() {
-        // Double-check validation before submitting
-        const feedbackLength = elements.feedbackTextarea.value.trim().length;
-        if (feedbackLength < 10) {
-          showConnectionStatus('offline', 'Please add more detail to your feedback');
-          return;
-        }
-        
-        this.classList.add('loading');
-        this.textContent = '';
-        this.disabled = true;
-        
-        formState.feedback = elements.feedbackTextarea.value;
-        formState.shoutout = elements.shoutoutTextarea.value;
-        formState.endTime = Date.now();
-        formState.duration = formState.endTime - formState.startTime;
-        formState.timestamp = new Date().toISOString();
-        formState.submitted = true;
-        
-        const saveSuccess = await saveFormData(formState);
-        
-        if (saveSuccess) {
-          setTimeout(() => {
-            showThankYouPage();
-          }, 1000);
-        } else {
-          // Show error and allow retry
-          this.classList.remove('loading');
-          this.textContent = 'Retry';
-          this.disabled = false;
-          showConnectionStatus('offline', 'Save failed - please try again');
-        }
-      });
-
-      // Check connection status on load
-      if (firebaseInitialized) {
-        showConnectionStatus('online', 'Connected');
-      } else {
-        showConnectionStatus('offline', 'Offline mode');
-      }
-
-      console.log('The Hourly Log initialized successfully!');
-    });
-  </script>
-</body>
-</html>
