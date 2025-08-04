@@ -1471,7 +1471,7 @@
     let firebaseInitialized = false;
 
     // Initialize EmailJS (you'll need to replace these with your actual EmailJS credentials)
-    emailjs.init("YOUR_EMAILJS_USER_ID"); // Replace with your EmailJS user ID
+    emailjs.init("6yL8w2hB9PoLGBNAQ"); // Replace with your EmailJS user ID
 
     try {
       firebase.initializeApp(firebaseConfig);
@@ -1598,7 +1598,7 @@
             timestamp: new Date(data.timestamp).toLocaleString()
           };
 
-          await emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', emailParams);
+          await emailjs.send('service_57b3j97', 'template_dexa8a9', emailParams);
           console.log('Email notification sent successfully');
         } catch (error) {
           console.error('Error sending email notification:', error);
