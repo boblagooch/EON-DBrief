@@ -694,14 +694,27 @@
       transition: all 0.3s ease;
     }
     
-    textarea:focus {
+    input[type="text"] {
+      width: 100%;
+      padding: 1rem;
+      margin: 1rem 0;
+      background: linear-gradient(135deg, rgba(52, 73, 94, 0.8), rgba(93, 109, 126, 0.8));
+      border: 2px solid var(--secondary-blue);
+      border-radius: 8px;
+      color: var(--text-light);
+      font-family: 'Roboto Condensed', sans-serif;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+    
+    textarea:focus, input[type="text"]:focus {
       outline: none;
       border-color: var(--light-blue);
       box-shadow: 0 0 15px rgba(174, 214, 241, 0.4);
       background: linear-gradient(135deg, rgba(93, 109, 126, 0.8), rgba(52, 73, 94, 0.8));
     }
     
-    textarea::placeholder {
+    textarea::placeholder, input[type="text"]::placeholder {
       color: rgba(248, 249, 250, 0.6);
       font-style: italic;
     }
@@ -894,6 +907,334 @@
       }
     }
     
+    /* Laika Space Dog Tribute */
+    .laika-tribute {
+      position: relative;
+      width: 200px;
+      height: 180px;
+      margin: 3rem auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .laika-container {
+      position: relative;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: laikaEntrance 2s ease-out 0.5s both;
+    }
+    
+    .laika-dog {
+      font-size: 4rem;
+      filter: hue-rotate(20deg) brightness(1.1);
+      position: relative;
+      z-index: 3;
+      animation: dogBark 3s ease-in-out infinite;
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    }
+    
+    .laika-label-arrow {
+      position: absolute;
+      top: 20px;
+      right: -160px;
+      animation: arrowAppear 1.5s ease-out 2s both;
+    }
+    
+    .arrow-line {
+      width: 80px;
+      height: 2px;
+      background: var(--accent-red);
+      position: relative;
+      margin-bottom: 0.5rem;
+    }
+    
+    .arrow-head {
+      position: absolute;
+      left: -2px;
+      top: -4px;
+      width: 0;
+      height: 0;
+      border-right: 8px solid var(--accent-red);
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+    }
+    
+    .laika-label {
+      font-family: 'Roboto Condensed', sans-serif;
+      font-size: 1rem;
+      color: var(--accent-red);
+      font-weight: 700;
+      text-transform: lowercase;
+      letter-spacing: 1px;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+      margin-right: 10px;
+      text-align: right;
+    }
+    
+    .bark-bubble {
+      position: absolute;
+      top: -60px;
+      left: -50px;
+      background: none;
+      border: none;
+      text-align: center;
+      animation: barkAppear 1.5s ease-out 1.5s both;
+    }
+    
+    .bark-text {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      color: var(--accent-red);
+      font-weight: 400;
+      letter-spacing: 2px;
+      text-shadow: 
+        2px 2px 4px rgba(0, 0, 0, 0.8),
+        0 0 10px rgba(231, 76, 60, 0.5);
+      animation: barkBounce 0.8s ease-in-out infinite;
+      text-transform: uppercase;
+    }
+    
+    .bark-text::before {
+      content: '🗣️';
+      position: absolute;
+      left: -2rem;
+      top: -0.2rem;
+      font-size: 1rem;
+      animation: barkIcon 0.8s ease-in-out infinite;
+    }
+    
+    .cosmic-rings {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+    }
+    
+    .cosmic-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 2px solid;
+      opacity: 0;
+    }
+    
+    .cosmic-ring.ring-1 {
+      width: 120px;
+      height: 120px;
+      top: 30px;
+      left: 40px;
+      border-color: var(--accent-red);
+      animation: cosmicExpand 4s ease-out 0.5s infinite;
+    }
+    
+    .cosmic-ring.ring-2 {
+      width: 140px;
+      height: 140px;
+      top: 20px;
+      left: 30px;
+      border-color: var(--primary-blue);
+      animation: cosmicExpand 4s ease-out 1s infinite;
+    }
+    
+    .cosmic-ring.ring-3 {
+      width: 160px;
+      height: 160px;
+      top: 10px;
+      left: 20px;
+      border-color: var(--secondary-blue);
+      animation: cosmicExpand 4s ease-out 1.5s infinite;
+    }
+    
+    .cosmic-ring.ring-4 {
+      width: 180px;
+      height: 180px;
+      top: 0;
+      left: 10px;
+      border-color: var(--light-blue);
+      animation: cosmicExpand 4s ease-out 2s infinite;
+    }
+    
+    .star-field {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+    }
+    
+    .star {
+      position: absolute;
+      opacity: 0;
+      animation: starTwinkle 3s ease-in-out infinite;
+    }
+    
+    .star-1 {
+      top: 20px;
+      left: 20px;
+      color: #F39C12;
+      font-size: 1.2rem;
+      animation-delay: 0.5s;
+    }
+    
+    .star-2 {
+      top: 40px;
+      right: 15px;
+      color: var(--light-blue);
+      font-size: 1rem;
+      animation-delay: 1.2s;
+    }
+    
+    .star-3 {
+      bottom: 30px;
+      left: 25px;
+      color: var(--secondary-blue);
+      font-size: 0.9rem;
+      animation-delay: 2s;
+    }
+    
+    .star-4 {
+      bottom: 20px;
+      right: 30px;
+      color: var(--accent-red);
+      font-size: 1.1rem;
+      animation-delay: 2.8s;
+    }
+    
+    .star-5 {
+      top: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #F39C12;
+      font-size: 0.8rem;
+      animation-delay: 3.5s;
+    }
+    
+    @keyframes laikaEntrance {
+      0% {
+        opacity: 0;
+        transform: scale(0.3) translateY(50px) rotate(-45deg);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.2) translateY(0) rotate(10deg);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0) rotate(0deg);
+      }
+    }
+    
+    @keyframes dogBark {
+      0%, 80%, 100% { 
+        transform: translateY(0) scale(1);
+      }
+      10%, 30% { 
+        transform: translateY(-3px) scale(1.05);
+      }
+      20% { 
+        transform: translateY(-1px) scale(1.02);
+      }
+    }
+    
+    @keyframes arrowAppear {
+      0% {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    @keyframes barkAppear {
+      0% {
+        opacity: 0;
+        transform: scale(0.5) translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+    
+    @keyframes barkBounce {
+      0%, 50%, 100% { 
+        transform: scale(1);
+      }
+      25% { 
+        transform: scale(1.1);
+      }
+      75% { 
+        transform: scale(1.05);
+      }
+    }
+    
+    @keyframes barkIcon {
+      0%, 50%, 100% { 
+        transform: scale(1);
+        opacity: 0.8;
+      }
+      25% { 
+        transform: scale(1.2);
+        opacity: 1;
+      }
+    }
+    
+    @keyframes cosmicExpand {
+      0% {
+        opacity: 0.8;
+        transform: scale(0.8);
+        border-width: 3px;
+      }
+      50% {
+        opacity: 0.4;
+        border-width: 2px;
+      }
+      100% {
+        opacity: 0;
+        transform: scale(1.6);
+        border-width: 1px;
+      }
+    }
+    
+    @keyframes starTwinkle {
+      0%, 100% { 
+        opacity: 0;
+        transform: scale(1);
+      }
+      50% { 
+        opacity: 1;
+        transform: scale(1.3);
+      }
+    }
+    
+    .fine-print-note {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(174, 214, 241, 0.3);
+    }
+    
+    .fine-print-note p {
+      font-family: 'Roboto Condensed', sans-serif;
+      font-size: 0.9rem;
+      color: var(--light-blue);
+      line-height: 1.4;
+      text-align: left;
+      font-weight: 400;
+      opacity: 0.8;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+    }
+    
+    .fine-print-note strong {
+      color: var(--secondary-blue);
+      font-weight: 700;
+    }
+    
     /* Connection Status */
     .connection-status {
       position: fixed;
@@ -947,6 +1288,52 @@
         height: 100px;
         font-size: 2.5rem;
       }
+      
+      .laika-tribute {
+        width: 150px;
+        height: 150px;
+        margin: 2rem auto;
+      }
+      
+      .laika-dog {
+        font-size: 3rem;
+      }
+      
+      .laika-label-arrow {
+        right: -120px;
+      }
+      
+      .arrow-line {
+        width: 60px;
+      }
+      
+      .cosmic-ring.ring-1 {
+        width: 100px;
+        height: 100px;
+        top: 25px;
+        left: 25px;
+      }
+      
+      .cosmic-ring.ring-2 {
+        width: 120px;
+        height: 120px;
+        top: 15px;
+        left: 15px;
+      }
+      
+      .cosmic-ring.ring-3 {
+        width: 140px;
+        height: 140px;
+        top: 5px;
+        left: 5px;
+      }
+      
+      .cosmic-ring.ring-4 {
+        width: 150px;
+        height: 150px;
+        top: 0;
+        left: 0;
+      }
     }
     
     @media (max-width: 480px) {
@@ -963,6 +1350,19 @@
       
       .splash-content {
         padding: 2rem;
+      }
+      
+      .laika-label-arrow {
+        right: -100px;
+        top: 30px;
+      }
+      
+      .arrow-line {
+        width: 50px;
+      }
+      
+      .laika-label {
+        font-size: 0.9rem;
       }
     }
   </style>
@@ -1024,16 +1424,21 @@
       </div>
       
       <div id="form-section" style="display:none;">
-        <textarea id="feedback" placeholder="Your thoughts..." maxlength="200" 
+        <textarea id="feedback" placeholder="Tell us about your shift" maxlength="200" 
                   aria-label="Share details about your shift" 
                   aria-describedby="feedback-counter"></textarea>
         <div class="char-counter" id="feedback-counter">0/200 characters</div>
-        <div id="shoutout-section" style="display:none;">
+        
+        <div id="shoutout-section">
           <textarea id="shoutout" placeholder="Want to shout someone out? Totally optional." maxlength="200"
                     aria-label="Optional - Give recognition to a coworker" 
                     aria-describedby="shoutout-counter"></textarea>
           <div class="char-counter" id="shoutout-counter">0/200 characters</div>
         </div>
+        
+        <input type="text" id="name" placeholder="Want to sign your work? (submissions are otherwise anonymous)" maxlength="50"
+               aria-label="Optional - Add your name to the submission">
+        
         <button id="submit-btn" aria-label="Submit your check-in responses">Submit</button>
       </div>
       
@@ -1046,6 +1451,9 @@
   <!-- Firebase SDK -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-app-compat.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-firestore-compat.min.js"></script>
+  
+  <!-- EmailJS SDK for email notifications -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
   <script>
     // Firebase Configuration
@@ -1061,6 +1469,9 @@
     // Initialize Firebase
     let db = null;
     let firebaseInitialized = false;
+
+    // Initialize EmailJS (you'll need to replace these with your actual EmailJS credentials)
+    emailjs.init("YOUR_EMAILJS_USER_ID"); // Replace with your EmailJS user ID
 
     try {
       firebase.initializeApp(firebaseConfig);
@@ -1097,6 +1508,7 @@
         mood: null,
         feedback: '',
         shoutout: '',
+        name: '',
         startTime: Date.now(),
         sessionId: generateSessionId(),
         submitted: false
@@ -1111,6 +1523,7 @@
         shoutoutSection: document.getElementById('shoutout-section'),
         shoutoutTextarea: document.getElementById('shoutout'),
         shoutoutCounter: document.getElementById('shoutout-counter'),
+        nameInput: document.getElementById('name'),
         submitBtn: document.getElementById('submit-btn'),
         encouragement: document.getElementById('encouragement'),
         app: document.getElementById('app'),
@@ -1137,16 +1550,16 @@
 
       const prompts = {
         great: {
-          feedback: "What made today especially great?",
-          shoutout: true
+          feedback: "Tell us about your shift",
+          shoutout: "Want to shout someone out? Totally optional."
         },
         okay: {
-          feedback: "What stood out most about today?",
-          shoutout: false
+          feedback: "Tell us about your shift",
+          shoutout: "Regardless of how your shift went, anyone you'd like to shout out for making it better?"
         },
         rough: {
-          feedback: "What was the biggest challenge today?",
-          shoutout: false
+          feedback: "Tell us about your shift",
+          shoutout: "Regardless of how your shift went, anyone you'd like to shout out for making it better?"
         }
       };
 
@@ -1172,27 +1585,61 @@
         }
       }
 
+      // Email notification function
+      async function sendEmailNotification(data) {
+        try {
+          const emailParams = {
+            to_email: 'info@kachkapdx.com',
+            from_name: 'The Hourly Log',
+            mood: data.mood,
+            feedback: data.feedback,
+            shoutout: data.shoutout || 'None',
+            submitted_by: data.name || 'Anonymous',
+            timestamp: new Date(data.timestamp).toLocaleString()
+          };
+
+          await emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', emailParams);
+          console.log('Email notification sent successfully');
+        } catch (error) {
+          console.error('Error sending email notification:', error);
+          // Don't fail the submission if email fails
+        }
+      }
+
       // Data saving function
       async function saveFormData(data) {
         console.log('Saving form data:', data);
         
         showConnectionStatus('saving', 'Saving...');
         
+        let saveSuccess = false;
+
         if (firebaseInitialized && db) {
           try {
             await db.collection('checkins').add(data);
             console.log('Data saved to Firebase successfully');
             showConnectionStatus('online', 'Saved successfully');
-            return true;
+            saveSuccess = true;
           } catch (error) {
             console.error('Error saving to Firebase:', error);
             showConnectionStatus('offline', 'Save failed - trying local backup');
-            return saveToLocalStorage(data);
+            saveSuccess = saveToLocalStorage(data);
           }
         } else {
           console.log('Firebase not available, saving locally');
-          return saveToLocalStorage(data);
+          saveSuccess = saveToLocalStorage(data);
         }
+
+        // Send email notification regardless of where data is saved
+        if (saveSuccess) {
+          try {
+            await sendEmailNotification(data);
+          } catch (error) {
+            console.error('Email notification failed, but data was saved:', error);
+          }
+        }
+
+        return saveSuccess;
       }
 
       function saveToLocalStorage(data) {
@@ -1280,8 +1727,8 @@
         formStarted = true;
         
         elements.feedbackTextarea.placeholder = prompt.feedback;
-        if (elements.shoutoutSection) {
-          elements.shoutoutSection.style.display = prompt.shoutout ? 'block' : 'none';
+        if (elements.shoutoutTextarea) {
+          elements.shoutoutTextarea.placeholder = prompt.shoutout;
         }
         
         elements.submitBtn.disabled = true;
@@ -1311,11 +1758,36 @@
             <div class="thank-you-content">
               <h1 class="thank-you-title">The<br>Hourly Log</h1>
               <p class="thank-you-message">Спасибо за откровенность</p>
-              <div style="margin: 2rem 0; font-size: 4rem;">🐕</div>
-              <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(174, 214, 241, 0.3);">
-                <p style="font-size: 0.9rem; color: var(--light-blue); line-height: 1.4; opacity: 0.8;">
-                  <strong>Note:</strong> THL is for brief check-ins at the end of shift. If you have any issues or concerns that are greater than this form allows, please check in with someone you trust. Responses are anonymous and used only for operational improvements.
-                </p>
+              <div class="laika-tribute">
+                <div class="laika-container">
+                  <div class="laika-dog">🐕</div>
+                  <div class="laika-label-arrow">
+                    <div class="arrow-line">
+                      <div class="arrow-head"></div>
+                    </div>
+                    <div class="laika-label">это Лайка</div>
+                  </div>
+                  <div class="bark-bubble">
+                    <div class="bark-text">Молодец!</div>
+                  </div>
+                </div>
+                <div class="cosmic-rings">
+                  <div class="cosmic-ring ring-1"></div>
+                  <div class="cosmic-ring ring-2"></div>
+                  <div class="cosmic-ring ring-3"></div>
+                  <div class="cosmic-ring ring-4"></div>
+                </div>
+                <div class="star-field">
+                  <div class="star star-1">★</div>
+                  <div class="star star-2">✦</div>
+                  <div class="star star-3">✧</div>
+                  <div class="star star-4">★</div>
+                  <div class="star star-5">✦</div>
+                </div>
+              </div>
+              
+              <div class="fine-print-note">
+                <p><strong>Note:</strong> THL is for brief check-ins at the end of shift. If you have any issues or concerns that are greater than this form allows, please check in with someone you trust. Responses are anonymous and used only for operational improvements. Individual feedback cannot be traced back to specific staff members. Responses are reviewed by management after a 24-hour delay.</p>
               </div>
             </div>
           `;
@@ -1445,6 +1917,7 @@
           
           formState.feedback = elements.feedbackTextarea.value;
           formState.shoutout = elements.shoutoutTextarea ? elements.shoutoutTextarea.value : '';
+          formState.name = elements.nameInput ? elements.nameInput.value : '';
           formState.endTime = Date.now();
           formState.duration = formState.endTime - formState.startTime;
           formState.timestamp = new Date().toISOString();
@@ -1477,4 +1950,3 @@
   </script>
 </body>
 </html>
-    
